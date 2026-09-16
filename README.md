@@ -1,16 +1,57 @@
-# React + Vite
+# Kenyan Sign Language
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Kenya sign language company project dedicated to promoting and teaching Kenyan Sign Language through a web-based platform.
 
-Currently, two official plugins are available:
+## About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project is a web application for learning and understanding Kenyan Sign Language. It provides interactive resources and educational content for both learners and teachers of sign language.
 
-## React Compiler
+## Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **CSS** (61.9%) - Styling and responsive layout
+- **JavaScript** (35.1%) - Interactive functionality and dynamic content
+- **HTML** (3%) - Structure and semantic markup
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Educational content for Kenyan Sign Language
+- Interactive learning modules
+- User-friendly interface
+- Responsive design for multiple devices
+
+## Getting Started
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/HezronOkoth001/master--kenyan-signLanguage-.git
+   ```
+
+2. Navigate to the project directory
+   ```bash
+   cd master--kenyan-signLanguage-
+   ```
+
+3. Open the project in your web browser or code editor
+
+## Project Structure
+
+- `index.html` - Main HTML file
+- `style.css` - Styling files
+- `script.js` - JavaScript functionality
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute:
+
+1. Fork the repository
+2. Create a new branch for your feature
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+Please add your license information here.
+
+## Contact
+
+For more information or support, please reach out to the project maintainers.
