@@ -6,7 +6,9 @@ import VideoSection from "./components/VideoSection";
 import About from "./components/About";
 import Services from "./components/Services";
 import Classes from "./components/Classes";
+import Blog from "./components/Blog";
 import Contact from "./components/Contact";
+import BlogAdmin from "./pages/BlogAdmin";
 
 function App() {
   return (
@@ -15,7 +17,6 @@ function App() {
       <Navbar />
 
       <main>
-
         <Hero />
 
         <VideoSection />
@@ -26,8 +27,11 @@ function App() {
 
         <Classes />
 
+        <Blog />
+
         <Contact />
 
+        <BlogAdmin />
       </main>
 
     </div>
