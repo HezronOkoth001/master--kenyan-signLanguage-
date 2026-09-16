@@ -1,41 +1,55 @@
-# Kenyan Sign Language (KSL) Website
+# Kenyan Sign Language (KSL)
 
-This project is a modern React-based landing page for a Kenyan Sign Language (KSL) company and learning platform. It is designed to promote Kenyan Sign Language education, increase awareness, and make it easy for people to learn, book classes, and get in touch.
+A welcoming digital platform for learning, promoting, and practicing Kenyan Sign Language (KSL). This project is designed to help people understand the importance of communication access, connect with the deaf community, and book KSL training, classes, or consultations.
 
-## What this app does
+## Overview
 
-This app does not act like a dictionary or translator. Instead, it is a marketing and education website for a KSL business. Its main purpose is to:
+This web application is a modern landing page for a Kenyan Sign Language business and educational platform. It highlights the mission of making communication more inclusive and easier for hearing and non-hearing communities to connect.
 
-- introduce the KSL learning brand and mission
-- explain what Kenyan Sign Language is and why it matters
-- show the services offered, such as training and consultations
-- display class packages for beginners, intermediates, and advanced learners
-- allow users to contact the business through WhatsApp
-- provide a visual section with an example sign-language video
+The website serves as a digital front door for:
 
-In simple terms, the app helps people understand the value of Kenyan Sign Language and makes it easy for them to sign up for classes or ask questions.
+- learning about Kenyan Sign Language
+- understanding the mission and value of inclusivity
+- exploring available training and consultation services
+- choosing beginner, intermediate, or advanced classes
+- contacting the business through WhatsApp or email
 
-## Main features
+## Why this project exists
 
-- Hero section with a strong message about learning and communication
-- About section explaining the mission and importance of inclusion
+Many people want to learn sign language but do not know where to start. This platform helps by giving them a simple, friendly, and accessible introduction to KSL and by making it easy to reach out for classes or support.
+
+## What the app does
+
+The app is a front-end learning and marketing website. It does not provide a sign recognition system or an online classroom backend. Instead, it helps promote the business and makes the learning journey easy to understand.
+
+Users can:
+
+- read about the importance of KSL
+- browse available services and class options
+- understand pricing and course duration
+- book a service or class through WhatsApp
+- send a message directly to the business
+
+## Key features
+
+- Hero section with a strong communication-focused message
+- About section explaining the mission and inclusion goals
 - Services section with pricing and booking buttons
-- Classes section with beginner, intermediate, and advanced levels
-- Contact section with phone, WhatsApp, email, and location details
-- Contact form that opens WhatsApp with the user’s message
-- Responsive design for desktop and mobile screens
-- Visual learning section with a sample video
+- Classes section with level-based course offerings
+- Contact section with phone, email, WhatsApp, and location details
+- Form that sends the user’s message directly to WhatsApp
+- Responsive layout for mobile and desktop screens
+- Video section showcasing visual communication and learning
 
-## App flow
+## User journey
 
-1. A visitor lands on the homepage.
-2. They see the brand message and learn about the value of KSL.
-3. They read the About section to understand the mission.
-4. They browse the available services and classes.
-5. If interested, they click Book Now or Send Message.
-6. The app opens a WhatsApp chat with a pre-filled message so the user can continue the conversation.
-
-This makes the website simple and practical for a business that relies on direct customer communication.
+1. A visitor opens the homepage.
+2. They see the main message: communication without barriers.
+3. They learn about the purpose and mission of the platform.
+4. They explore the services and KSL classes available.
+5. If interested, they click a booking button.
+6. A WhatsApp chat opens with a pre-filled message.
+7. The user can continue the conversation and book a class or request help.
 
 ## Technologies used
 
@@ -62,73 +76,92 @@ master--kenyan-signLanguage-/
 ├── vite.config.js
 ├── eslint.config.js
 ├── README.md
-└── package-lock.json
+├── package-lock.json
+└── .gitignore
 ```
 
-## Key components
+## Main components
 
-- Navbar - top navigation menu
-- Hero - main headline and branding area
-- VideoSection - demo video to support learning visuals
-- About - mission and inclusion message
-- Services - training and consultation offerings
-- Classes - class packages and booking options
-- Contact - contact information and message form
+- Navbar: top navigation bar
+- Hero: headline and brand introduction
+- VideoSection: demonstration of visual communication
+- About: mission and inclusion message
+- Services: training and consultation offers
+- Classes: beginner, intermediate, and advanced KSL classes
+- Contact: business contact details and message form
 
-## How the booking works
+## Booking and contact flow
 
-Each Book Now button creates a WhatsApp link using a phone number already included in the code. The button sends a message such as:
+The website includes WhatsApp booking buttons for services and classes. When a user clicks Book Now, the app creates a WhatsApp link using a phone number and sends a pre-filled message such as:
 
-- “Hello, I would like to book KSL Training. The price is KSh 1,500.”
+```text
+Hello, I would like to book KSL Training. The price is KSh 1,500.
+```
 
-The contact form also gathers the user’s name, email, and message, then sends that information to WhatsApp automatically.
+The contact form also collects a user’s name, email, and message, then opens WhatsApp with the message ready to send.
 
 ## Getting started
 
-1. Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/HezronOkoth001/master--kenyan-signLanguage-.git
 ```
 
-2. Open the project folder
+### 2. Open the project folder
 
 ```bash
 cd master--kenyan-signLanguage-
 ```
 
-3. Install dependencies
+### 3. Install dependencies
 
 ```bash
 npm install
 ```
 
-4. Start the development server
+### 4. Start the development server
 
 ```bash
 npm run dev
 ```
 
-5. Open the local URL shown in the terminal (usually http://localhost:5173)
+### 5. Open the app in your browser
+
+The app usually runs at:
+
+```text
+http://localhost:5173
+```
 
 ## Notes
 
-- The project is a front-end learning and business website, not a full backend app.
-- WhatsApp is used as the primary communication channel.
-- The video section currently contains a sample video placeholder and can be replaced with official KSL content later.
+- This is a front-end website and does not include a backend database or authentication system.
+- WhatsApp is used as the main communication channel for enquiries and bookings.
+- The video section currently contains a sample video placeholder and should later be replaced with original KSL learning content.
 
-## Future improvements
+## Future enhancements
 
-- add real lesson content and sign vocabulary pages
-- add a quiz or learning exercises section
-- add authentication for students and instructors
-- replace placeholder media with original Kenyan Sign Language videos
-- connect the contact form to an email service or backend database
+- add a lesson library with common KSL vocabulary
+- add a quiz system for learners
+- add a blog or knowledge section
+- add online class booking with a backend
+- create dedicated pages for each service and class
+- replace sample media with original Kenyan Sign Language resources
 
 ## Contact
 
-For inquiries, the project includes contact details for the business, including WhatsApp and email.
+The project includes contact information for the KSL business, including:
+
+- phone number
+- WhatsApp support
+- email address
+- location in Nairobi, Kenya
 
 ## License
 
-This project does not currently include a license file. If needed, add an appropriate open-source license before publishing it widely.
+This project does not currently include a license file. If you plan to share or publish it publicly, you may want to add an appropriate license such as MIT or Apache 2.0.
+
+## Summary
+
+This app is a modern, inclusive, and friendly platform for Kenyan Sign Language learning and communication. Its main goal is to help people understand KSL, connect with the deaf community, and access learning opportunities more easily.
