@@ -1,0 +1,641 @@
+/* =========================================
+   ADMIN BLOG DASHBOARD
+   Modern Dark + Gold Admin Theme
+========================================= */
+
+.admin-blog-page {
+  min-height: 100vh;
+  background: #111111;
+  color: #f5f5f5;
+  padding-bottom: 60px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.admin-blog-header {
+  width: 100%;
+  background: #181818;
+  border-bottom: 1px solid #2c2c2c;
+  padding: 35px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.admin-label {
+  display: inline-block;
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.admin-blog-header h1 {
+  margin: 0;
+  font-size: 38px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.admin-blog-header h1 strong {
+  color: #d4af37;
+}
+
+.admin-blog-header p {
+  margin: 10px 0 0;
+  color: #a8a8a8;
+  font-size: 15px;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* =========================================
+   HEADER BUTTONS
+========================================= */
+
+.admin-view-button,
+.admin-logout-button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.admin-view-button {
+  background: #d4af37;
+  color: #111111;
+}
+
+.admin-view-button:hover {
+  background: #e3c35c;
+  transform: translateY(-2px);
+}
+
+.admin-logout-button {
+  background: #252525;
+  color: #ffffff;
+  border: 1px solid #3a3a3a;
+}
+
+.admin-logout-button:hover {
+  background: #303030;
+  border-color: #555555;
+}
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.admin-blog-container {
+  width: 90%;
+  max-width: 1250px;
+  margin: 40px auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+/* =========================================
+   SECTIONS
+========================================= */
+
+.admin-blog-form-section,
+.admin-published-section {
+  background: #181818;
+  border: 1px solid #2b2b2b;
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.admin-section-heading {
+  margin-bottom: 30px;
+}
+
+.admin-section-heading span {
+  display: block;
+  color: #d4af37;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.admin-section-heading h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.admin-section-heading p {
+  margin: 8px 0 0;
+  color: #969696;
+  font-size: 14px;
+}
+
+/* =========================================
+   FORM
+========================================= */
+
+.admin-blog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.admin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.admin-form-group label {
+  color: #eeeeee;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.admin-form-group input,
+.admin-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: #101010;
+  border: 1px solid #333333;
+  border-radius: 9px;
+  padding: 14px 15px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.admin-form-group input:focus,
+.admin-form-group textarea:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.08);
+}
+
+.admin-form-group input::placeholder,
+.admin-form-group textarea::placeholder {
+  color: #666666;
+}
+
+.admin-form-group textarea {
+  resize: vertical;
+  min-height: 250px;
+  line-height: 1.7;
+}
+
+.admin-form-group input[type="file"] {
+  cursor: pointer;
+  padding: 11px;
+}
+
+.admin-form-group input[type="file"]::file-selector-button {
+  background: #d4af37;
+  color: #111111;
+  border: none;
+  padding: 9px 14px;
+  border-radius: 6px;
+  margin-right: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-form-group small {
+  color: #777777;
+  font-size: 12px;
+}
+
+/* =========================================
+   COVER IMAGE PREVIEW
+========================================= */
+
+.admin-cover-preview {
+  background: #101010;
+  border: 1px solid #2d2d2d;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.admin-cover-preview p,
+.admin-content-images > p {
+  margin: 0 0 12px;
+  color: #d4af37;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-cover-preview img {
+  display: block;
+  width: 100%;
+  max-height: 380px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* =========================================
+   CONTENT IMAGES
+========================================= */
+
+.admin-content-images {
+  background: #101010;
+  border: 1px solid #2d2d2d;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.admin-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.admin-image-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #181818;
+  border: 1px solid #333333;
+}
+
+.admin-image-preview img {
+  display: block;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.admin-image-preview button {
+  width: 100%;
+  border: none;
+  background: #252525;
+  color: #ff8d8d;
+  padding: 9px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-image-preview button:hover {
+  background: #321d1d;
+}
+
+/* =========================================
+   FORM BUTTONS
+========================================= */
+
+.admin-form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 5px;
+}
+
+.admin-publish-button,
+.admin-cancel-button {
+  border: none;
+  padding: 14px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.admin-publish-button {
+  background: #d4af37;
+  color: #111111;
+}
+
+.admin-publish-button:hover {
+  background: #e4c45d;
+  transform: translateY(-2px);
+}
+
+.admin-cancel-button {
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #414141;
+}
+
+.admin-cancel-button:hover {
+  background: #353535;
+}
+
+/* =========================================
+   NO BLOGS
+========================================= */
+
+.admin-no-blogs {
+  text-align: center;
+  padding: 55px 20px;
+  background: #101010;
+  border: 1px dashed #3a3a3a;
+  border-radius: 12px;
+}
+
+.admin-no-blogs h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+}
+
+.admin-no-blogs p {
+  margin: 0;
+  color: #777777;
+}
+
+/* =========================================
+   BLOG LIST
+========================================= */
+
+.admin-blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-blog-card {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  background: #101010;
+  border: 1px solid #2d2d2d;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.25s ease;
+}
+
+.admin-blog-card:hover {
+  border-color: #4a4a4a;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   BLOG CARD IMAGE
+========================================= */
+
+.admin-blog-card-image {
+  min-height: 220px;
+  background: #202020;
+}
+
+.admin-blog-card-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-no-image {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777777;
+  font-size: 13px;
+}
+
+/* =========================================
+   BLOG CARD CONTENT
+========================================= */
+
+.admin-blog-card-content {
+  padding: 25px;
+}
+
+.admin-blog-card-meta {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.admin-blog-card-meta span {
+  color: #d4af37;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.admin-blog-card-content h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 21px;
+  line-height: 1.3;
+}
+
+.admin-blog-author {
+  margin: 0 0 12px;
+  color: #777777;
+  font-size: 12px;
+}
+
+.admin-blog-author strong {
+  color: #bbbbbb;
+}
+
+.admin-blog-preview {
+  margin: 0;
+  color: #999999;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* =========================================
+   CARD ACTIONS
+========================================= */
+
+.admin-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.admin-card-actions button {
+  border: none;
+  border-radius: 7px;
+  padding: 9px 15px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.admin-edit-button {
+  background: #d4af37;
+  color: #111111;
+}
+
+.admin-edit-button:hover {
+  background: #e4c45d;
+}
+
+.admin-delete-button {
+  background: #351f1f;
+  color: #ff9292;
+}
+
+.admin-delete-button:hover {
+  background: #482525;
+}
+
+.admin-read-button {
+  background: #252525;
+  color: #ffffff;
+  border: 1px solid #3b3b3b !important;
+}
+
+.admin-read-button:hover {
+  background: #303030;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .admin-blog-header {
+    padding: 30px 5%;
+  }
+
+  .admin-blog-header h1 {
+    font-size: 32px;
+  }
+
+  .admin-blog-container {
+    width: 92%;
+  }
+
+  .admin-blog-form-section,
+  .admin-published-section {
+    padding: 25px;
+  }
+
+  .admin-image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-blog-card {
+    grid-template-columns: 190px 1fr;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+  .admin-blog-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 25px 6%;
+  }
+
+  .admin-blog-header h1 {
+    font-size: 29px;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+  }
+
+  .admin-view-button,
+  .admin-logout-button {
+    flex: 1;
+  }
+
+  .admin-blog-container {
+    width: 92%;
+    margin-top: 25px;
+    gap: 25px;
+  }
+
+  .admin-blog-form-section,
+  .admin-published-section {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .admin-section-heading h2 {
+    font-size: 23px;
+  }
+
+  .admin-image-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form-buttons {
+    flex-direction: column;
+  }
+
+  .admin-publish-button,
+  .admin-cancel-button {
+    width: 100%;
+  }
+
+  .admin-blog-card {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-blog-card-image,
+  .admin-blog-card-image img,
+  .admin-no-image {
+    min-height: 210px;
+    height: 210px;
+  }
+
+  .admin-blog-card-content {
+    padding: 20px;
+  }
+
+  .admin-card-actions {
+    width: 100%;
+  }
+
+  .admin-card-actions button {
+    flex: 1;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 400px) {
+  .admin-blog-header h1 {
+    font-size: 25px;
+  }
+
+  .admin-blog-header p {
+    font-size: 13px;
+  }
+
+  .admin-blog-form-section,
+  .admin-published-section {
+    padding: 16px;
+  }
+
+  .admin-blog-card-content h3 {
+    font-size: 18px;
+  }
+
+  .admin-card-actions {
+    flex-direction: column;
+  }
+
+  .admin-card-actions button {
+    width: 100%;
+  }
+}
