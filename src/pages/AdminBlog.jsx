@@ -14,23 +14,56 @@ const AdminBlog = () => {
   const [coverImage, setCoverImage] = useState("");
   const [contentImages, setContentImages] = useState([]);
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("kslAdminLoggedIn");
+  const [editingId, setEditingId] = useState(null);
 
-    if (loggedIn !== "true") {
+  // Protect the admin page
+  useEffect(() => {
+    const isLoggedIn =
+      localStorage.getItem("kslAdminLoggedIn") === "true";
+
+    if (!isLoggedIn) {
       navigate("/admin/login");
       return;
     }
 
-    const savedBlogs =
-      JSON.parse(localStorage.getItem("kslBlogs")) || [];
-
-    setBlogs(savedBlogs);
+    loadBlogs();
   }, [navigate]);
 
-  const handleCoverImage = (event) => {
-    const file = event.target.files[0];
+  // Load blogs from localStorage
+  const loadBlogs = () => {
+    const savedBlogs = localStorage.getItem("kslBlogs");
 
+    if (!savedBlogs) {
+      setBlogs([]);
+      return;
+    }
+
+    try {
+      const parsedBlogs = JSON.parse(savedBlogs);
+
+      const sortedBlogs = parsedBlogs.sort(
+        (a, b) => b.id - a.id
+      );
+
+      setBlogs(sortedBlogs);
+    } catch (error) {
+      console.error("Error loading blogs:", error);
+      setBlogs([]);
+    }
+  };
+
+  // Save blogs to localStorage
+  const saveBlogs = (updatedBlogs) => {
+    localStorage.setItem(
+      "kslBlogs",
+      JSON.stringify(updatedBlogs)
+    );
+
+    setBlogs(updatedBlogs);
+  };
+
+  // Convert uploaded image to Base64
+  const convertImageToBase64 = (file, callback) => {
     if (!file) {
       return;
     }
@@ -38,79 +71,66 @@ const AdminBlog = () => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setCoverImage(reader.result);
+      callback(reader.result);
     };
 
     reader.readAsDataURL(file);
   };
 
-  const handleContentImages = (event) => {
-    const files = Array.from(event.target.files);
+  // Handle cover image
+  const handleCoverImage = (event) => {
+    const file = event.target.files[0];
 
-    files.forEach((file) => {
-      const reader = new FileReader();
+    if (!file) {
+      return;
+    }
 
-      reader.onloadend = () => {
-        setContentImages((previousImages) => [
-          ...previousImages,
-          reader.result,
-        ]);
-      };
-
-      reader.readAsDataURL(file);
+    convertImageToBase64(file, (imageData) => {
+      setCoverImage(imageData);
     });
   };
 
-  const handlePublish = (event) => {
-    event.preventDefault();
+  // Handle multiple content images
+  const handleContentImages = (event) => {
+    const files = Array.from(event.target.files);
 
-    if (!title.trim()) {
-      alert("Please enter a blog title.");
+    if (files.length === 0) {
       return;
     }
 
-    if (!author.trim()) {
-      alert("Please enter the author name.");
-      return;
-    }
+    const imagePromises = files.map((file) => {
+      return new Promise((resolve) => {
+        convertImageToBase64(file, (imageData) => {
+          resolve(imageData);
+        });
+      });
+    });
 
-    if (!content.trim()) {
-      alert("Please write the blog content.");
-      return;
-    }
+    Promise.all(imagePromises).then((images) => {
+      setContentImages((previousImages) => [
+        ...previousImages,
+        ...images,
+      ]);
+    });
+  };
 
-    if (!coverImage) {
-      alert("Please select a cover image.");
-      return;
-    }
-
-    const newBlog = {
-      id: Date.now(),
-      title: title.trim(),
-      author: author.trim(),
-      content: content.trim(),
-      coverImage: coverImage,
-      contentImages: contentImages,
-      date: new Date().toLocaleDateString(),
-    };
-
-    const updatedBlogs = [
-      newBlog,
-      ...blogs,
-    ];
-
-    localStorage.setItem(
-      "kslBlogs",
-      JSON.stringify(updatedBlogs)
+  // Remove one content image
+  const removeContentImage = (indexToRemove) => {
+    setContentImages((previousImages) =>
+      previousImages.filter(
+        (_, index) => index !== indexToRemove
+      )
     );
+  };
 
-    setBlogs(updatedBlogs);
-
+  // Reset form
+  const resetForm = () => {
     setTitle("");
     setAuthor("");
     setContent("");
     setCoverImage("");
     setContentImages([]);
+    setEditingId(null);
 
     const coverInput =
       document.getElementById("cover-image");
@@ -125,16 +145,122 @@ const AdminBlog = () => {
     if (contentInput) {
       contentInput.value = "";
     }
-
-    alert("Blog published successfully!");
   };
 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this blog?"
+  // Create or update blog
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!title.trim()) {
+      alert("Please enter a blog title.");
+      return;
+    }
+
+    if (!content.trim()) {
+      alert("Please enter the blog content.");
+      return;
+    }
+
+    if (!coverImage) {
+      alert("Please select a cover image.");
+      return;
+    }
+
+    const now = new Date();
+
+    const publishedAt = now.toISOString();
+
+    const formattedDate = now.toLocaleDateString(
+      "en-KE",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }
     );
 
-    if (!confirmDelete) {
+    const formattedTime = now.toLocaleTimeString(
+      "en-KE",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+      }
+    );
+
+    // EDIT EXISTING BLOG
+    if (editingId !== null) {
+      const updatedBlogs = blogs.map((blog) => {
+        if (blog.id !== editingId) {
+          return blog;
+        }
+
+        return {
+          ...blog,
+          title: title.trim(),
+          author: author.trim() || "KSL Team",
+          content: content.trim(),
+          coverImage,
+          contentImages,
+        };
+      });
+
+      saveBlogs(updatedBlogs);
+
+      alert("Blog post updated successfully.");
+
+      resetForm();
+
+      return;
+    }
+
+    // CREATE NEW BLOG
+    const newBlog = {
+      id: Date.now(),
+      title: title.trim(),
+      author: author.trim() || "KSL Team",
+      content: content.trim(),
+      coverImage,
+      contentImages,
+      publishedAt,
+      date: formattedDate,
+      time: formattedTime,
+    };
+
+    const updatedBlogs = [
+      newBlog,
+      ...blogs,
+    ];
+
+    saveBlogs(updatedBlogs);
+
+    alert("Blog post published successfully.");
+
+    resetForm();
+  };
+
+  // Edit blog
+  const handleEdit = (blog) => {
+    setEditingId(blog.id);
+
+    setTitle(blog.title || "");
+    setAuthor(blog.author || "");
+    setContent(blog.content || "");
+    setCoverImage(blog.coverImage || "");
+    setContentImages(blog.contentImages || []);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Delete blog
+  const handleDelete = (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this blog post?"
+    );
+
+    if (!confirmed) {
       return;
     }
 
@@ -142,14 +268,17 @@ const AdminBlog = () => {
       (blog) => blog.id !== id
     );
 
-    localStorage.setItem(
-      "kslBlogs",
-      JSON.stringify(updatedBlogs)
-    );
+    saveBlogs(updatedBlogs);
 
-    setBlogs(updatedBlogs);
+    // If we were editing this post, reset the form
+    if (editingId === id) {
+      resetForm();
+    }
+
+    alert("Blog post deleted successfully.");
   };
 
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem("kslAdminLoggedIn");
 
@@ -160,60 +289,74 @@ const AdminBlog = () => {
     <div className="admin-blog-page">
 
       {/* HEADER */}
-
       <header className="admin-blog-header">
-
         <div>
-          <span>ADMIN DASHBOARD</span>
+          <span className="admin-label">
+            KSL ADMIN
+          </span>
 
           <h1>
             Blog
-            <strong> Management</strong>
+            <strong> Dashboard</strong>
           </h1>
 
           <p>
-            Create and manage your Kenyan Sign Language
+            Create and manage Kenyan Sign Language
             articles.
           </p>
         </div>
 
-        <button
-          className="admin-logout-button"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+        <div className="admin-header-actions">
+          <button
+            type="button"
+            onClick={() => navigate("/blog")}
+            className="admin-view-button"
+          >
+            View Blog
+          </button>
 
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="admin-logout-button"
+          >
+            Logout
+          </button>
+        </div>
       </header>
-
-      {/* MAIN CONTENT */}
 
       <main className="admin-blog-container">
 
-        {/* CREATE BLOG */}
-
-        <section className="admin-create-section">
+        {/* CREATE / EDIT FORM */}
+        <section className="admin-blog-form-section">
 
           <div className="admin-section-heading">
-
-            <span>CREATE ARTICLE</span>
+            <span>
+              {editingId !== null
+                ? "EDIT ARTICLE"
+                : "NEW ARTICLE"}
+            </span>
 
             <h2>
-              Create a New
-              <strong> Blog Post</strong>
+              {editingId !== null
+                ? "Edit Blog Post"
+                : "Create a Blog Post"}
             </h2>
 
+            <p>
+              {editingId !== null
+                ? "Update the article information below."
+                : "Add a new article to your KSL blog."}
+            </p>
           </div>
 
           <form
             className="admin-blog-form"
-            onSubmit={handlePublish}
+            onSubmit={handleSubmit}
           >
 
             {/* TITLE */}
-
             <div className="admin-form-group">
-
               <label htmlFor="blog-title">
                 Blog Title
               </label>
@@ -221,19 +364,16 @@ const AdminBlog = () => {
               <input
                 id="blog-title"
                 type="text"
-                placeholder="Enter your blog title"
+                placeholder="Enter blog title"
                 value={title}
                 onChange={(event) =>
                   setTitle(event.target.value)
                 }
               />
-
             </div>
 
             {/* AUTHOR */}
-
             <div className="admin-form-group">
-
               <label htmlFor="blog-author">
                 Author
               </label>
@@ -247,13 +387,10 @@ const AdminBlog = () => {
                   setAuthor(event.target.value)
                 }
               />
-
             </div>
 
             {/* COVER IMAGE */}
-
             <div className="admin-form-group">
-
               <label htmlFor="cover-image">
                 Cover Image
               </label>
@@ -265,23 +402,26 @@ const AdminBlog = () => {
                 onChange={handleCoverImage}
               />
 
-              {coverImage && (
-                <div className="admin-cover-preview">
-
-                  <img
-                    src={coverImage}
-                    alt="Cover preview"
-                  />
-
-                </div>
-              )}
-
+              <small>
+                This image will appear at the top of
+                the blog post.
+              </small>
             </div>
 
+            {/* COVER IMAGE PREVIEW */}
+            {coverImage && (
+              <div className="admin-cover-preview">
+                <p>Cover Image Preview</p>
+
+                <img
+                  src={coverImage}
+                  alt="Cover preview"
+                />
+              </div>
+            )}
+
             {/* CONTENT */}
-
             <div className="admin-form-group">
-
               <label htmlFor="blog-content">
                 Blog Content
               </label>
@@ -289,21 +429,22 @@ const AdminBlog = () => {
               <textarea
                 id="blog-content"
                 rows="12"
-                placeholder="Write your article here..."
+                placeholder="Write your blog article here..."
                 value={content}
                 onChange={(event) =>
                   setContent(event.target.value)
                 }
               />
 
+              <small>
+                Separate paragraphs by pressing Enter.
+              </small>
             </div>
 
             {/* ARTICLE IMAGES */}
-
             <div className="admin-form-group">
-
               <label htmlFor="content-images">
-                Add Images To Article
+                Article Images
               </label>
 
               <input
@@ -314,104 +455,205 @@ const AdminBlog = () => {
                 onChange={handleContentImages}
               />
 
-              {contentImages.length > 0 && (
-                <div className="admin-images-preview">
+              <small>
+                You can select multiple images.
+              </small>
+            </div>
+
+            {/* ARTICLE IMAGE PREVIEWS */}
+            {contentImages.length > 0 && (
+              <div className="admin-content-images">
+
+                <p>
+                  Article Images
+                </p>
+
+                <div className="admin-image-grid">
 
                   {contentImages.map(
                     (image, index) => (
-                      <img
+                      <div
+                        className="admin-image-preview"
                         key={index}
-                        src={image}
-                        alt={`Article ${index + 1}`}
-                      />
+                      >
+                        <img
+                          src={image}
+                          alt={`Article ${index + 1}`}
+                        />
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeContentImage(index)
+                          }
+                        >
+                          Remove
+                        </button>
+                      </div>
                     )
                   )}
 
                 </div>
+              </div>
+            )}
+
+            {/* BUTTONS */}
+            <div className="admin-form-buttons">
+
+              <button
+                type="submit"
+                className="admin-publish-button"
+              >
+                {editingId !== null
+                  ? "Update Blog Post"
+                  : "Publish Blog Post"}
+              </button>
+
+              {editingId !== null && (
+                <button
+                  type="button"
+                  className="admin-cancel-button"
+                  onClick={resetForm}
+                >
+                  Cancel Edit
+                </button>
               )}
 
             </div>
 
-            {/* PUBLISH */}
-
-            <button
-              type="submit"
-              className="admin-publish-button"
-            >
-              Publish Blog
-            </button>
-
           </form>
-
         </section>
 
-        {/* EXISTING BLOGS */}
-
-        <section className="admin-existing-section">
+        {/* PUBLISHED BLOGS */}
+        <section className="admin-published-section">
 
           <div className="admin-section-heading">
-
-            <span>YOUR ARTICLES</span>
+            <span>
+              PUBLISHED ARTICLES
+            </span>
 
             <h2>
-              Published
-              <strong> Blogs</strong>
+              Your Blog Posts
             </h2>
 
+            <p>
+              Manage articles that are currently
+              stored on this website.
+            </p>
           </div>
 
           {blogs.length === 0 ? (
-            <div className="no-blogs">
+            <div className="admin-no-blogs">
+              <h3>
+                No Blog Posts Yet
+              </h3>
+
               <p>
-                You have not published any blogs yet.
+                Create your first article using
+                the form above.
               </p>
             </div>
           ) : (
             <div className="admin-blog-list">
 
               {blogs.map((blog) => (
-
                 <article
                   className="admin-blog-card"
                   key={blog.id}
                 >
 
+                  {/* IMAGE */}
                   <div className="admin-blog-card-image">
 
-                    <img
-                      src={blog.coverImage}
-                      alt={blog.title}
-                    />
+                    {blog.coverImage ? (
+                      <img
+                        src={blog.coverImage}
+                        alt={blog.title}
+                      />
+                    ) : (
+                      <div className="admin-no-image">
+                        No Image
+                      </div>
+                    )}
 
                   </div>
 
+                  {/* CONTENT */}
                   <div className="admin-blog-card-content">
 
-                    <span>
-                      {blog.date}
-                    </span>
+                    <div className="admin-blog-card-meta">
+
+                      <span>
+                        {blog.date}
+                      </span>
+
+                      <span>
+                        {blog.time}
+                      </span>
+
+                    </div>
 
                     <h3>
                       {blog.title}
                     </h3>
 
-                    <p>
-                      By {blog.author}
+                    <p className="admin-blog-author">
+                      By{" "}
+                      <strong>
+                        {blog.author || "KSL Team"}
+                      </strong>
                     </p>
 
-                    <button
-                      className="delete-blog-button"
-                      onClick={() =>
-                        handleDelete(blog.id)
-                      }
-                    >
-                      Delete
-                    </button>
+                    <p className="admin-blog-preview">
+                      {blog.content &&
+                      blog.content.length > 180
+                        ? `${blog.content.substring(
+                            0,
+                            180
+                          )}...`
+                        : blog.content}
+                    </p>
+
+                    {/* ACTIONS */}
+                    <div className="admin-card-actions">
+
+                      <button
+                        type="button"
+                        className="admin-edit-button"
+                        onClick={() =>
+                          handleEdit(blog)
+                        }
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        className="admin-delete-button"
+                        onClick={() =>
+                          handleDelete(blog.id)
+                        }
+                      >
+                        Delete
+                      </button>
+
+                      <button
+                        type="button"
+                        className="admin-read-button"
+                        onClick={() =>
+                          navigate(
+                            `/blog/${blog.id}`
+                          )
+                        }
+                      >
+                        Read
+                      </button>
+
+                    </div>
 
                   </div>
 
                 </article>
-
               ))}
 
             </div>
