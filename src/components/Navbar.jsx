@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -13,6 +14,7 @@ function Navbar() {
         <a href="#classes">Classes</a>
         <a href="#contact">Contact</a>
       </div>
+      <Link to="/blog">Blog</Link>
 
       <button className="navbar-button">
         Book a Class

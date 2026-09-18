@@ -1090,3 +1090,12 @@
 .mpesa-button:hover {
   background: #15803d;
 }
+
+
+.nav-blog-button {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}

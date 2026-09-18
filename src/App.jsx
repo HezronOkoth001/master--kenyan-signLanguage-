@@ -9,12 +9,12 @@ import Services from "./components/Services";
 import Classes from "./components/Classes";
 import Blog from "./components/Blog";
 import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 import BlogPage from "./pages/BlogPage";
 import BlogArticle from "./pages/BlogArticle";
 import AdminLogin from "./pages/AdminLogin";
 import AdminBlog from "./pages/AdminBlog";
-
 
 function Home() {
   return (
@@ -30,15 +30,14 @@ function Home() {
         <Blog />
         <Contact />
       </main>
+      <Footer />
     </div>
   );
 }
 
-
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
 
         {/* HOME */}
@@ -57,7 +56,6 @@ function App() {
         <Route path="/admin/blog" element={<AdminBlog />} />
 
       </Routes>
-
     </BrowserRouter>
   );
 }

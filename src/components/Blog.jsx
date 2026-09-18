@@ -1,29 +1,64 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Blog.css";
 
+const API_URL = "http://localhost:5000/api/blogs";
+const SERVER_URL = "http://localhost:5000";
+
 const Blog = () => {
-  const blogs = [
-    {
-      title: "What Is Kenyan Sign Language?",
-      excerpt:
-        "Learn what Kenyan Sign Language is and why it is important for communication and inclusion.",
-      image: "/blog-1.jpg",
-      date: "September 17, 2026",
-    },
-    {
-      title: "Why Learn Kenyan Sign Language?",
-      excerpt:
-        "Discover some of the benefits of learning Kenyan Sign Language in everyday communication.",
-      image: "/blog-2.jpg",
-      date: "September 17, 2026",
-    },
-    {
-      title: "Getting Started With KSL",
-      excerpt:
-        "A simple guide for beginners who want to start learning Kenyan Sign Language.",
-      image: "/blog-3.jpg",
-      date: "September 17, 2026",
-    },
-  ];
+  const [latestBlog, setLatestBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "";
+
+    // Old Base64 images
+    if (imagePath.startsWith("data:")) {
+      return imagePath;
+    }
+
+    // Full image URL
+    if (imagePath.startsWith("http")) {
+      return imagePath;
+    }
+
+    // Images uploaded by Multer
+    if (imagePath.startsWith("/uploads/")) {
+      return `${SERVER_URL}${imagePath}`;
+    }
+
+    return imagePath;
+  };
+
+  useEffect(() => {
+    const loadLatestBlog = async () => {
+      try {
+        setLoading(true);
+
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error("Failed to load blogs");
+        }
+
+        const blogs = await response.json();
+
+        if (blogs.length > 0) {
+          // Backend already sorts newest first
+          setLatestBlog(blogs[0]);
+        } else {
+          setLatestBlog(null);
+        }
+      } catch (error) {
+        console.error("Error loading latest blog:", error);
+        setLatestBlog(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLatestBlog();
+  }, []);
 
   return (
     <section className="blog-section" id="blog">
@@ -43,33 +78,83 @@ const Blog = () => {
           </p>
         </div>
 
-        <div className="blog-grid">
-          {blogs.map((blog, index) => (
-            <article className="blog-card" key={index}>
+        {/* LATEST BLOG */}
+
+        {loading ? (
+          <div className="blog-loading">
+            <p>Loading latest article...</p>
+          </div>
+        ) : latestBlog ? (
+          <div className="blog-grid">
+
+            <article className="blog-card">
+
+              {/* IMAGE */}
 
               <div className="blog-image">
-                <img src={blog.image} alt={blog.title} />
+
+                {latestBlog.cover_image ? (
+                  <img
+                    src={getImageUrl(latestBlog.cover_image)}
+                    alt={latestBlog.title}
+                  />
+                ) : (
+                  <div className="blog-no-image">
+                    No Image
+                  </div>
+                )}
+
               </div>
+
+              {/* CONTENT */}
 
               <div className="blog-content">
 
                 <span className="blog-date">
-                  {blog.date}
+                  {latestBlog.published_at
+                    ? new Date(
+                        latestBlog.published_at
+                      ).toLocaleDateString("en-KE", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    : ""}
                 </span>
 
-                <h3>{blog.title}</h3>
+                <h3>
+                  {latestBlog.title}
+                </h3>
 
-                <p>{blog.excerpt}</p>
+                <p>
+                  {latestBlog.content &&
+                  latestBlog.content.length > 180
+                    ? `${latestBlog.content.substring(
+                        0,
+                        180
+                      )}...`
+                    : latestBlog.content}
+                </p>
 
-                <button className="read-more">
+                {/* READ MORE */}
+
+                <Link
+                  to={`/blog/${latestBlog.id}`}
+                  className="read-more"
+                >
                   Read More →
-                </button>
+                </Link>
 
               </div>
 
             </article>
-          ))}
-        </div>
+
+          </div>
+        ) : (
+          <div className="blog-empty">
+            <p>No blog posts available yet.</p>
+          </div>
+        )}
 
       </div>
     </section>
