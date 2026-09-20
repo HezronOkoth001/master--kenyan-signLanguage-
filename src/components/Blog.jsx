@@ -1,164 +1,193 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./Blog.css";
 
-const API_URL = "http://localhost:5000/api/blogs";
-const SERVER_URL = "http://localhost:5000";
-
-const Blog = () => {
-  const [latestBlog, setLatestBlog] = useState(null);
+function Blog() {
+  const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return "";
-
-    // Old Base64 images
-    if (imagePath.startsWith("data:")) {
-      return imagePath;
-    }
-
-    // Full image URL
-    if (imagePath.startsWith("http")) {
-      return imagePath;
-    }
-
-    // Images uploaded by Multer
-    if (imagePath.startsWith("/uploads/")) {
-      return `${SERVER_URL}${imagePath}`;
-    }
-
-    return imagePath;
-  };
-
   useEffect(() => {
-    const loadLatestBlog = async () => {
+    const fetchArticles = async () => {
       try {
-        setLoading(true);
+        const response = await fetch(
+          "http://localhost:5000/api/blogs"
+        );
 
-        const response = await fetch(API_URL);
+        const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error("Failed to load blogs");
-        }
-
-        const blogs = await response.json();
-
-        if (blogs.length > 0) {
-          // Backend already sorts newest first
-          setLatestBlog(blogs[0]);
-        } else {
-          setLatestBlog(null);
-        }
+        setArticles(data.slice(0, 3));
       } catch (error) {
-        console.error("Error loading latest blog:", error);
-        setLatestBlog(null);
+        console.error("Error loading blog:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadLatestBlog();
+    fetchArticles();
   }, []);
+
+  const getImageUrl = (image) => {
+    if (!image) return null;
+
+    if (image.startsWith("data:image")) {
+      return image;
+    }
+
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    return `http://localhost:5000${image}`;
+  };
 
   return (
     <section className="blog-section" id="blog">
       <div className="blog-container">
 
-        <div className="blog-heading">
-          <span>OUR BLOG</span>
+        {/* HEADER */}
+        <div className="blog-header">
 
-          <h2>
-            Learn More About
-            <strong> Kenyan Sign Language</strong>
-          </h2>
+          <div>
+            <span className="blog-label">
+              From The Blog
+            </span>
 
-          <p>
-            Explore articles, tips, guides, and useful information
-            about Kenyan Sign Language and inclusive communication.
-          </p>
+            <h2>
+              Learn beyond
+              <span> the classroom.</span>
+            </h2>
+          </div>
+
+          <div className="blog-header-right">
+            <p>
+              Discover useful KSL tips, communication advice,
+              learning resources, and stories from the world
+              of Kenyan Sign Language.
+            </p>
+
+            <Link
+              to="/blog"
+              className="blog-view-all"
+            >
+              View All Articles
+              <span>→</span>
+            </Link>
+          </div>
+
         </div>
 
-        {/* LATEST BLOG */}
-
+        {/* ARTICLES */}
         {loading ? (
           <div className="blog-loading">
-            <p>Loading latest article...</p>
+            Loading articles...
           </div>
-        ) : latestBlog ? (
-          <div className="blog-grid">
-
-            <article className="blog-card">
-
-              {/* IMAGE */}
-
-              <div className="blog-image">
-
-                {latestBlog.cover_image ? (
-                  <img
-                    src={getImageUrl(latestBlog.cover_image)}
-                    alt={latestBlog.title}
-                  />
-                ) : (
-                  <div className="blog-no-image">
-                    No Image
-                  </div>
-                )}
-
-              </div>
-
-              {/* CONTENT */}
-
-              <div className="blog-content">
-
-                <span className="blog-date">
-                  {latestBlog.published_at
-                    ? new Date(
-                        latestBlog.published_at
-                      ).toLocaleDateString("en-KE", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })
-                    : ""}
-                </span>
-
-                <h3>
-                  {latestBlog.title}
-                </h3>
-
-                <p>
-                  {latestBlog.content &&
-                  latestBlog.content.length > 180
-                    ? `${latestBlog.content.substring(
-                        0,
-                        180
-                      )}...`
-                    : latestBlog.content}
-                </p>
-
-                {/* READ MORE */}
-
-                <Link
-                  to={`/blog/${latestBlog.id}`}
-                  className="read-more"
-                >
-                  Read More →
-                </Link>
-
-              </div>
-
-            </article>
-
+        ) : articles.length === 0 ? (
+          <div className="blog-empty">
+            <h3>No articles yet.</h3>
+            <p>
+              New KSL learning resources will appear here soon.
+            </p>
           </div>
         ) : (
-          <div className="blog-empty">
-            <p>No blog posts available yet.</p>
+          <div className="blog-grid">
+
+            {articles.map((article, index) => {
+
+              const image = getImageUrl(
+                article.cover_image
+              );
+
+              return (
+                <article
+                  className={`blog-card ${
+                    index === 0
+                      ? "blog-card-featured"
+                      : ""
+                  }`}
+                  key={article.id}
+                >
+
+                  {/* IMAGE */}
+                  <Link
+                    to={`/blog/${article.id}`}
+                    className="blog-image"
+                  >
+                    {image ? (
+                      <img
+                        src={image}
+                        alt={article.title}
+                      />
+                    ) : (
+                      <div className="blog-image-placeholder">
+                        <span>KSL</span>
+                      </div>
+                    )}
+
+                    <div className="blog-image-number">
+                      0{index + 1}
+                    </div>
+                  </Link>
+
+                  {/* CONTENT */}
+                  <div className="blog-card-content">
+
+                    <div className="blog-meta">
+                      <span>
+                        {article.author}
+                      </span>
+
+                      <span>•</span>
+
+                      <span>
+                        {new Date(
+                          article.published_at
+                        ).toLocaleDateString(
+                          "en-KE",
+                          {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )}
+                      </span>
+                    </div>
+
+                    <h3>
+                      <Link
+                        to={`/blog/${article.id}`}
+                      >
+                        {article.title}
+                      </Link>
+                    </h3>
+
+                    <p>
+                      {article.content.length > 140
+                        ? `${article.content.slice(
+                            0,
+                            140
+                          )}...`
+                        : article.content}
+                    </p>
+
+                    <Link
+                      to={`/blog/${article.id}`}
+                      className="blog-read-more"
+                    >
+                      Read Article
+                      <span>→</span>
+                    </Link>
+
+                  </div>
+
+                </article>
+              );
+            })}
+
           </div>
         )}
 
       </div>
     </section>
   );
-};
+}
 
 export default Blog;

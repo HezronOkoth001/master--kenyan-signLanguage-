@@ -1,100 +1,111 @@
-import React from "react";
-
-const About = () => {
+function About() {
   return (
     <section className="about-section" id="about">
       <div className="about-container">
 
-        {/* Header */}
-        <div className="about-header">
-          <span className="about-small-title">ABOUT US</span>
+        {/* Section heading */}
+        <div className="about-heading">
+
+          <span className="about-label">
+            About Us
+          </span>
 
           <h2>
-            Bridging Communication Through
-            <span> Kenyan Sign Language</span>
+            Making Kenyan Sign Language
+            <span> easier to learn.</span>
           </h2>
 
           <p>
-            Our platform is designed to make Kenyan Sign Language easier
-            to learn, understand, and use. We believe communication should
-            be accessible to everyone, regardless of hearing ability.
+            Master Kenyan Sign Language is a learning platform
+            created to make Kenyan Sign Language simple, practical,
+            and accessible to everyone.
           </p>
+
         </div>
 
-        {/* Main Content */}
-        <div className="about-content">
 
-          {/* Left Side */}
-          <div className="about-text">
-            <h3>Our Mission</h3>
+        {/* Main content */}
+        <div className="about-grid">
+
+          {/* Left */}
+          <div className="about-main">
 
             <p>
-              Our mission is to promote communication and inclusion by
-              providing accessible tools and resources for learning Kenyan
-              Sign Language.
+              Whether you are completely new to KSL, want to improve
+              your communication skills, or want to communicate more
+              effectively with Deaf people, our lessons are designed
+              to help you learn step by step.
             </p>
 
             <p>
-              We want to create a digital platform where students, families,
-              teachers, professionals, and members of the deaf community can
-              learn and interact with Kenyan Sign Language.
+              We focus on practical communication, clear instruction,
+              and a learning experience that helps you build confidence
+              at your own pace.
             </p>
 
-            <div className="about-features">
+          </div>
 
-              <div className="about-feature">
-                <div className="feature-icon">✓</div>
-                <div>
-                  <h4>Accessible Learning</h4>
-                  <p>
-                    Learn sign language through simple and accessible
-                    digital resources.
-                  </p>
-                </div>
+
+          {/* Right */}
+          <div className="about-features">
+
+            <div className="about-feature">
+
+              <div className="about-feature-number">
+                01
               </div>
 
-              <div className="about-feature">
-                <div className="feature-icon">✓</div>
-                <div>
-                  <h4>Inclusive Communication</h4>
-                  <p>
-                    Helping bridge communication between deaf and hearing
-                    communities.
-                  </p>
-                </div>
-              </div>
+              <div>
+                <h3>
+                  Simple Learning
+                </h3>
 
-              <div className="about-feature">
-                <div className="feature-icon">✓</div>
-                <div>
-                  <h4>Modern Technology</h4>
-                  <p>
-                    Using technology to make Kenyan Sign Language easier
-                    to access and learn.
-                  </p>
-                </div>
+                <p>
+                  Clear and practical lessons that are
+                  easy to follow.
+                </p>
               </div>
 
             </div>
-          </div>
 
-          {/* Right Side */}
-          <div className="about-card">
 
-            <div className="about-card-icon">🤝</div>
+            <div className="about-feature">
 
-            <h3>Building an Inclusive Community</h3>
+              <div className="about-feature-number">
+                02
+              </div>
 
-            <p>
-              Communication connects people. By supporting Kenyan Sign
-              Language education and awareness, we can help create a more
-              inclusive society where everyone has the opportunity to
-              communicate and participate.
-            </p>
+              <div>
+                <h3>
+                  Practical Communication
+                </h3>
 
-            <div className="about-stat">
-              <strong>100%</strong>
-              <span>Focused on accessibility and inclusion</span>
+                <p>
+                  Learn signs and communication skills
+                  for everyday situations.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div className="about-feature">
+
+              <div className="about-feature-number">
+                03
+              </div>
+
+              <div>
+                <h3>
+                  Learn With Confidence
+                </h3>
+
+                <p>
+                  Build your confidence through guided
+                  lessons and personalized support.
+                </p>
+              </div>
+
             </div>
 
           </div>
@@ -104,6 +115,6 @@ const About = () => {
       </div>
     </section>
   );
-};
+}
 
 export default About;

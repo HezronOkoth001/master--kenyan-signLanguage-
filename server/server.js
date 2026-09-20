@@ -4,6 +4,7 @@ const path = require("path");
 
 const db = require("./config/database");
 const blogRoutes = require("./routes/blogs");
+const authRoutes = require("./routes/auth");
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.get("/", (req, res) => {
 // ========================================
 
 app.use("/api/blogs", blogRoutes);
+app.use("/api/auth", authRoutes);
 
 
 // ========================================

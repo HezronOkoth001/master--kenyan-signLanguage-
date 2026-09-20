@@ -1,48 +1,76 @@
 function VideoSection() {
   return (
-    <section className="video-section">
-
-      <div className="section-heading">
-        <span className="section-label">
-          LEARN THROUGH VISUAL COMMUNICATION
-        </span>
-
-        <h2>
-          See how sign language
-          <br />
-          brings people together.
-        </h2>
-
-        <p>
-          Sign language is more than communication.
-          It creates connection, understanding, and inclusion.
-        </p>
-      </div>
-
+    <section className="video-section" id="video">
       <div className="video-container">
 
-        <video
-          className="sample-video"
-          controls
-          autoPlay
-          loop
-          playsInline
-        >
-          <source
-            src="/WIN_20260616_10_09_44_Pro.mp4"
-            type="video/mp4"
-          />
+        {/* LEFT CONTENT */}
+        <div className="video-content">
 
-          Your browser does not support the video tag.
-        </video>
+          <span className="video-label">
+            KSL Learning Preview
+          </span>
+
+          <h2>
+            See how
+            <span> KSL </span>
+            brings people together.
+          </h2>
+
+          <p>
+            Kenyan Sign Language is more than learning individual signs.
+            It is a way to communicate, connect, and understand one another.
+          </p>
+
+          <p>
+            Explore our learning videos and practice practical signs
+            that you can use in everyday communication.
+          </p>
+
+          <a
+            href="#classes"
+            className="video-button"
+          >
+            Start Learning
+            <span>→</span>
+          </a>
+
+        </div>
+
+        {/* VIDEO */}
+        <div className="video-wrapper">
+
+          <div className="video-frame">
+
+            <video
+              controls
+              preload="metadata"
+              poster="/video-poster.jpg"
+            >
+              <source
+                src="/WIN_20230830_11_51_47_Pro.mp4"
+                type="video/mp4"
+              />
+
+              Your browser does not support the video element.
+            </video>
+
+            <div className="video-corner video-corner-one"></div>
+            <div className="video-corner video-corner-two"></div>
+
+          </div>
+
+          <div className="video-caption">
+            <span>01</span>
+
+            <div>
+              <strong>Kenyan Sign Language</strong>
+              <p>Learn visually. Practice confidently.</p>
+            </div>
+          </div>
+
+        </div>
 
       </div>
-
-      <p className="video-note">
-        Sample video for demonstration purposes.
-        Our own Kenyan Sign Language videos will be added later.
-      </p>
-
     </section>
   );
 }

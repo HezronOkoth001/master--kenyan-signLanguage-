@@ -5,12 +5,8 @@ import "./AdminBlog.css";
 const API_URL = "http://localhost:5000/api/blogs";
 const SERVER_URL = "http://localhost:5000";
 
-const AdminBlog = () => {
+function AdminBlog() {
   const navigate = useNavigate();
-
-  // ==============================
-  // STATE
-  // ==============================
 
   const [blogs, setBlogs] = useState([]);
 
@@ -18,108 +14,72 @@ const AdminBlog = () => {
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
 
-  // Cover image
-  const [coverImageFile, setCoverImageFile] =
-    useState(null);
+  const [coverImageFile, setCoverImageFile] = useState(null);
+  const [coverImagePreview, setCoverImagePreview] = useState("");
 
-  const [coverImagePreview, setCoverImagePreview] =
-    useState("");
-
-  // Optional article images
-  const [contentImages, setContentImages] =
-    useState([]);
+  const [contentImages, setContentImages] = useState([]);
 
   const [editingId, setEditingId] = useState(null);
 
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] =
-    useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-
-  // ==============================
-  // IMAGE URL HELPER
-  // ==============================
-
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) {
-      return "";
-    }
-
-    // Old Base64 images
-    if (imagePath.startsWith("data:")) {
-      return imagePath;
-    }
-
-    // Full URL
-    if (imagePath.startsWith("http")) {
-      return imagePath;
-    }
-
-    // Backend image
-    if (imagePath.startsWith("/uploads/")) {
-      return `${SERVER_URL}${imagePath}`;
-    }
-
-    return imagePath;
+  const getToken = () => {
+    return localStorage.getItem("kslAdminToken");
   };
 
+  const getAuthHeaders = () => {
+    const token = getToken();
 
-  // ==============================
-  // LOAD BLOGS
-  // ==============================
+    return {
+      Authorization: `Bearer ${token}`,
+    };
+  };
+
+  const getImageUrl = (image) => {
+    if (!image) return "";
+
+    if (
+      image.startsWith("http://") ||
+      image.startsWith("https://") ||
+      image.startsWith("data:image")
+    ) {
+      return image;
+    }
+
+    return `${SERVER_URL}${image}`;
+  };
+
+  const logoutAndRedirect = () => {
+    localStorage.removeItem("kslAdminLoggedIn");
+    localStorage.removeItem("kslAdminToken");
+    localStorage.removeItem("kslAdmin");
+
+    navigate("/admin/login");
+  };
 
   const loadBlogs = async () => {
     try {
-      setLoading(true);
-      setErrorMessage("");
-
       const response = await fetch(API_URL);
 
       if (!response.ok) {
-        throw new Error(
-          `Server returned status ${response.status}`
-        );
+        throw new Error("Failed to load articles");
       }
 
       const data = await response.json();
 
-      if (!Array.isArray(data)) {
-        throw new Error(
-          "The server returned invalid blog data."
-        );
-      }
-
       setBlogs(data);
-
     } catch (error) {
-      console.error(
-        "Error loading blogs:",
-        error
-      );
+      console.error("Load blogs error:", error);
 
-      setBlogs([]);
-
-      setErrorMessage(
-        `Could not load blogs: ${error.message}`
-      );
-
-    } finally {
-      setLoading(false);
+      setErrorMessage(error.message);
     }
   };
 
-
-  // ==============================
-  // PROTECT ADMIN PAGE
-  // ==============================
-
   useEffect(() => {
-    const isLoggedIn =
-      localStorage.getItem(
-        "kslAdminLoggedIn"
-      ) === "true";
+    const token = getToken();
 
-    if (!isLoggedIn) {
+    if (!token) {
       navigate("/admin/login");
       return;
     }
@@ -127,130 +87,54 @@ const AdminBlog = () => {
     loadBlogs();
   }, [navigate]);
 
+  const handleCoverImageChange = (e) => {
+    const file = e.target.files[0];
 
-  // ==============================
-  // COVER IMAGE
-  // ==============================
-
-  const handleCoverImage = (event) => {
-    const file = event.target.files[0];
-
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Please select an image file.");
+      setErrorMessage("Please select a valid image.");
+
       return;
     }
+
+    setErrorMessage("");
 
     setCoverImageFile(file);
 
-    const previewUrl =
-      URL.createObjectURL(file);
+    const previewUrl = URL.createObjectURL(file);
 
     setCoverImagePreview(previewUrl);
   };
 
+  const handleContentImagesChange = (e) => {
+    const files = Array.from(e.target.files);
 
-  // ==============================
-  // ARTICLE IMAGES
-  // OPTIONAL + MULTIPLE
-  // ==============================
-
-  const handleContentImages = (event) => {
-    const files = Array.from(
-      event.target.files
-    );
-
-    if (files.length === 0) {
-      return;
-    }
-
-    const imageFiles = files.filter((file) =>
+    const validImages = files.filter((file) =>
       file.type.startsWith("image/")
     );
 
-    if (imageFiles.length !== files.length) {
-      alert(
-        "Only image files can be selected."
-      );
+    if (validImages.length !== files.length) {
+      setErrorMessage("Only image files are allowed.");
+
+      return;
     }
 
-    const newImages = imageFiles.map(
-      (file) => ({
-        file: file,
-        preview:
-          URL.createObjectURL(file),
-      })
-    );
+    setErrorMessage("");
 
-    setContentImages(
-      (previousImages) => [
-        ...previousImages,
-        ...newImages,
-      ]
-    );
-
-    // Allow selecting the same file again
-    event.target.value = "";
+    setContentImages((previousImages) => [
+      ...previousImages,
+      ...validImages,
+    ]);
   };
 
-
-  // ==============================
-  // REMOVE ARTICLE IMAGE
-  // ==============================
-
-  const removeContentImage = (
-    indexToRemove
-  ) => {
-    setContentImages(
-      (previousImages) => {
-
-        const imageToRemove =
-          previousImages[indexToRemove];
-
-        if (imageToRemove?.preview) {
-          URL.revokeObjectURL(
-            imageToRemove.preview
-          );
-        }
-
-        return previousImages.filter(
-          (_, index) =>
-            index !== indexToRemove
-        );
-      }
+  const removeContentImage = (index) => {
+    setContentImages((previousImages) =>
+      previousImages.filter((_, imageIndex) => imageIndex !== index)
     );
   };
-
-
-  // ==============================
-  // RESET FORM
-  // ==============================
 
   const resetForm = () => {
-
-    if (coverImagePreview) {
-      if (
-        coverImagePreview.startsWith(
-          "blob:"
-        )
-      ) {
-        URL.revokeObjectURL(
-          coverImagePreview
-        );
-      }
-    }
-
-    contentImages.forEach((image) => {
-      if (image.preview) {
-        URL.revokeObjectURL(
-          image.preview
-        );
-      }
-    });
-
     setTitle("");
     setAuthor("");
     setContent("");
@@ -261,359 +145,175 @@ const AdminBlog = () => {
     setContentImages([]);
 
     setEditingId(null);
+
     setErrorMessage("");
 
-    const coverInput =
-      document.getElementById(
-        "cover-image"
-      );
-
-    const contentInput =
-      document.getElementById(
-        "content-images"
-      );
+    const coverInput = document.getElementById("coverImage");
 
     if (coverInput) {
       coverInput.value = "";
     }
 
-    if (contentInput) {
-      contentInput.value = "";
+    const articleInput = document.getElementById("articleImages");
+
+    if (articleInput) {
+      articleInput.value = "";
     }
   };
 
-
-  // ==============================
-  // CREATE BLOG
-  // ==============================
-
   const createBlog = async () => {
-
     try {
-
       setLoading(true);
       setErrorMessage("");
 
       const formData = new FormData();
 
-      formData.append(
-        "title",
-        title.trim()
-      );
+      formData.append("title", title);
+      formData.append("author", author);
+      formData.append("content", content);
 
-      formData.append(
-        "author",
-        author.trim()
-      );
-
-      formData.append(
-        "content",
-        content.trim()
-      );
-
-
-      // Cover image
       if (coverImageFile) {
-
-        formData.append(
-          "cover_image",
-          coverImageFile
-        );
+        formData.append("cover_image", coverImageFile);
       }
 
+      contentImages.forEach((file) => {
+        formData.append("article_images", file);
+      });
 
-      // Optional article images
-      contentImages.forEach(
-        (image) => {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: formData,
+      });
 
-          formData.append(
-            "article_images",
-            image.file
-          );
+      if (response.status === 401) {
+        logoutAndRedirect();
+        return;
+      }
 
-        }
-      );
-
-
-      const response = await fetch(
-        API_URL,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-
-      const data =
-        await response.json();
-
+      const data = await response.json();
 
       if (!response.ok) {
-
         throw new Error(
-          data.message ||
-            "Failed to create blog post."
+          data.message || "Failed to create article"
         );
       }
-
-
-      console.log(
-        "Blog created:",
-        data
-      );
-
-
-      alert(
-        "Blog post published successfully."
-      );
-
-
-      resetForm();
 
       await loadBlogs();
 
-
+      resetForm();
     } catch (error) {
+      console.error("Create blog error:", error);
 
-      console.error(
-        "Create blog error:",
-        error
-      );
-
-      setErrorMessage(
-        error.message
-      );
-
-      alert(error.message);
-
-
+      setErrorMessage(error.message);
     } finally {
-
       setLoading(false);
     }
   };
 
-
-  // ==============================
-  // UPDATE BLOG
-  // ==============================
-
   const updateBlog = async () => {
-
     try {
-
       setLoading(true);
       setErrorMessage("");
 
-      const formData =
-        new FormData();
-
-
-      formData.append(
-        "title",
-        title.trim()
-      );
-
-      formData.append(
-        "author",
-        author.trim()
-      );
-
-      formData.append(
-        "content",
-        content.trim()
-      );
-
-
-      // New cover image only
-      if (coverImageFile) {
-
-        formData.append(
-          "cover_image",
-          coverImageFile
-        );
+      if (editingId === null || editingId === undefined) {
+        throw new Error("No article selected for editing.");
       }
 
+      const formData = new FormData();
 
-      // Optional new article images
-      contentImages.forEach(
-        (image) => {
+      formData.append("title", title);
+      formData.append("author", author);
+      formData.append("content", content);
 
-          // Only upload actual files
-          if (image.file) {
+      if (coverImageFile) {
+        formData.append("cover_image", coverImageFile);
+      }
 
-            formData.append(
-              "article_images",
-              image.file
-            );
-          }
+      contentImages.forEach((file) => {
+        formData.append("article_images", file);
+      });
 
-        }
-      );
+      const response = await fetch(`${API_URL}/${editingId}`, {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        body: formData,
+      });
 
+      if (response.status === 401) {
+        logoutAndRedirect();
+        return;
+      }
 
-      const response =
-        await fetch(
-          `${API_URL}/${editingId}`,
-          {
-            method: "PUT",
-            body: formData,
-          }
-        );
-
-
-      const data =
-        await response.json();
-
+      const data = await response.json();
 
       if (!response.ok) {
-
         throw new Error(
-          data.message ||
-            "Failed to update blog post."
+          data.message || "Failed to update article"
         );
       }
-
-
-      console.log(
-        "Blog updated:",
-        data
-      );
-
-
-      alert(
-        "Blog post updated successfully."
-      );
-
-
-      resetForm();
 
       await loadBlogs();
 
-
+      resetForm();
     } catch (error) {
+      console.error("Update blog error:", error);
 
-      console.error(
-        "Update blog error:",
-        error
-      );
-
-      setErrorMessage(
-        error.message
-      );
-
-      alert(error.message);
-
-
+      setErrorMessage(error.message);
     } finally {
-
       setLoading(false);
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // ==============================
-  // SUBMIT
-  // ==============================
-
-  const handleSubmit = async (
-    event
-  ) => {
-
-    event.preventDefault();
-
+    setErrorMessage("");
 
     if (!title.trim()) {
-
-      alert(
-        "Please enter a blog title."
-      );
-
+      setErrorMessage("Please enter an article title.");
       return;
     }
-
 
     if (!author.trim()) {
-
-      alert(
-        "Please enter the author name."
-      );
-
+      setErrorMessage("Please enter the author name.");
       return;
     }
-
 
     if (!content.trim()) {
-
-      alert(
-        "Please enter the blog content."
-      );
-
+      setErrorMessage("Please enter the article content.");
       return;
     }
 
-
-    // Cover image required only
-    // for new articles
-    if (
-      editingId === null &&
-      !coverImageFile
-    ) {
-
-      alert(
-        "Please select a cover image."
-      );
-
-      return;
-    }
-
-
-    if (editingId !== null) {
-
+    if (editingId !== null && editingId !== undefined) {
       await updateBlog();
-
     } else {
-
       await createBlog();
     }
   };
 
-
-  // ==============================
-  // EDIT BLOG
-  // ==============================
-
   const handleEdit = (blog) => {
+    if (!blog || blog.id === null || blog.id === undefined) {
+      return;
+    }
 
     setEditingId(blog.id);
 
-    setTitle(
-      blog.title || ""
-    );
-
-    setAuthor(
-      blog.author || ""
-    );
-
-    setContent(
-      blog.content || ""
-    );
-
+    setTitle(blog.title || "");
+    setAuthor(blog.author || "");
+    setContent(blog.content || "");
 
     setCoverImageFile(null);
 
-    setCoverImagePreview(
-      getImageUrl(
-        blog.cover_image
-      )
-    );
+    if (blog.cover_image) {
+      setCoverImagePreview(
+        getImageUrl(blog.cover_image)
+      );
+    } else {
+      setCoverImagePreview("");
+    }
 
-
-    // Existing article images are
-    // not loaded into the upload
-    // selection yet.
     setContentImages([]);
-
 
     setErrorMessage("");
 
@@ -623,523 +323,639 @@ const AdminBlog = () => {
     });
   };
 
+  const handleDelete = async (id) => {
+    if (id === null || id === undefined) {
+      return;
+    }
 
-  // ==============================
-  // DELETE BLOG
-  // ==============================
-
-  const handleDelete = async (
-    id
-  ) => {
-
-    const confirmed =
-      window.confirm(
-        "Are you sure you want to delete this blog post?"
-      );
-
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this article?"
+    );
 
     if (!confirmed) {
       return;
     }
 
-
     try {
-
       setLoading(true);
       setErrorMessage("");
 
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
 
-      const response =
-        await fetch(
-          `${API_URL}/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
+      if (response.status === 401) {
+        logoutAndRedirect();
+        return;
+      }
 
-
-      const data =
-        await response.json();
-
+      const data = await response.json();
 
       if (!response.ok) {
-
         throw new Error(
-          data.message ||
-            "Failed to delete blog post."
+          data.message || "Failed to delete article"
         );
       }
 
+      setBlogs((previousBlogs) =>
+        previousBlogs.filter((blog) => blog.id !== id)
+      );
 
       if (editingId === id) {
         resetForm();
       }
-
-
-      alert(
-        "Blog post deleted successfully."
-      );
-
-
-      await loadBlogs();
-
-
     } catch (error) {
+      console.error("Delete blog error:", error);
 
-      console.error(
-        "Delete blog error:",
-        error
-      );
-
-      setErrorMessage(
-        error.message
-      );
-
-      alert(error.message);
-
-
+      setErrorMessage(error.message);
     } finally {
-
       setLoading(false);
     }
   };
 
+  const formatDate = (date) => {
+    if (!date) return "";
 
-  // ==============================
-  // LOGOUT
-  // ==============================
-
-  const handleLogout = () => {
-
-    localStorage.removeItem(
-      "kslAdminLoggedIn"
-    );
-
-    navigate("/admin/login");
+    return new Date(date).toLocaleDateString("en-KE", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
   };
 
+  const formatTime = (date) => {
+    if (!date) return "";
 
-  // ==============================
-  // FORMAT DATE
-  // ==============================
-
-  const formatDate = (
-    dateValue
-  ) => {
-
-    if (!dateValue) {
-      return "";
-    }
-
-    const date =
-      new Date(dateValue);
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return "";
-    }
-
-    return date.toLocaleDateString(
-      "en-KE",
-      {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }
-    );
+    return new Date(date).toLocaleTimeString("en-KE", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
-
-
-  // ==============================
-  // FORMAT TIME
-  // ==============================
-
-  const formatTime = (
-    dateValue
-  ) => {
-
-    if (!dateValue) {
-      return "";
-    }
-
-    const date =
-      new Date(dateValue);
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return "";
-    }
-
-    return date.toLocaleTimeString(
-      "en-KE",
-      {
-        hour: "2-digit",
-        minute: "2-digit",
-      }
-    );
-  };
-
-
-  // ==============================
-  // PAGE
-  // ==============================
 
   return (
-    <div className="admin-blog-page">
+    <div className="admin-dashboard">
 
-      {/* HEADER */}
+      {/* SIDEBAR */}
 
-      <header className="admin-blog-header">
+      <aside className="admin-sidebar">
 
-        <div>
+        <div className="admin-brand">
+          <div className="brand-icon">
+            KSL
+          </div>
 
-          <span className="admin-label">
-            KSL ADMIN
-          </span>
-
-          <h1>
-            Blog
-            <strong>
-              {" "}Dashboard
-            </strong>
-          </h1>
-
-          <p>
-            Create and manage Kenyan
-            Sign Language articles.
-          </p>
-
+          <div>
+            <h2>KSL Admin</h2>
+            <span>Content Center</span>
+          </div>
         </div>
 
-
-        <div className="admin-header-actions">
+        <nav className="admin-navigation">
 
           <button
-            type="button"
+            className="admin-nav-item active"
             onClick={() =>
-              navigate("/blog")
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              })
             }
-            className="admin-view-button"
           >
-            View Blog
+            <span>▦</span>
+            Dashboard
           </button>
 
+          <button
+            className="admin-nav-item"
+            onClick={() =>
+              document
+                .getElementById("articles")
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                })
+            }
+          >
+            <span>▤</span>
+            Articles
+          </button>
 
           <button
-            type="button"
-            onClick={
-              handleLogout
+            className="admin-nav-item"
+            onClick={() =>
+              document
+                .getElementById("editor")
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                })
             }
-            className="admin-logout-button"
           >
-            Logout
+            <span>＋</span>
+            Add Article
+          </button>
+
+          <button
+            className="admin-nav-item"
+            onClick={() => navigate("/blog")}
+          >
+            <span>↗</span>
+            View Website
+          </button>
+
+        </nav>
+
+        <div className="sidebar-bottom">
+
+          <div className="sidebar-user">
+            <div className="user-avatar">
+              A
+            </div>
+
+            <div>
+              <strong>Administrator</strong>
+              <span>Content Manager</span>
+            </div>
+          </div>
+
+          <button
+            className="sidebar-logout"
+            onClick={logoutAndRedirect}
+          >
+            ⇥ Logout
           </button>
 
         </div>
 
-      </header>
+      </aside>
 
 
-      {/* MAIN */}
+      {/* MAIN CONTENT */}
 
-      <main className="admin-blog-container">
+      <main className="admin-main">
 
-        {/* CREATE / EDIT */}
+        {/* TOP BAR */}
 
-        <section className="admin-blog-form-section">
+        <header className="admin-topbar">
 
-          <div className="admin-section-heading">
+          <div>
+            <p className="breadcrumb">
+              Dashboard / Content
+            </p>
 
-            <span>
-              {editingId !== null
-                ? "EDIT ARTICLE"
-                : "NEW ARTICLE"}
+            <h1>
+              Content Management
+            </h1>
+          </div>
+
+          <div className="topbar-right">
+
+            <button
+              className="website-button"
+              onClick={() => navigate("/blog")}
+            >
+              View Website ↗
+            </button>
+
+            <div className="top-admin">
+
+              <div className="top-avatar">
+                A
+              </div>
+
+              <div>
+                <strong>Admin</strong>
+                <span>Online</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </header>
+
+
+        {/* ERROR */}
+
+        {errorMessage && (
+          <div className="admin-error">
+            <strong>Error:</strong>
+            <span>{errorMessage}</span>
+          </div>
+        )}
+
+
+        {/* WELCOME */}
+
+        <section className="welcome-section">
+
+          <div>
+            <span className="welcome-label">
+              KSL CONTENT CENTER
             </span>
 
             <h2>
-              {editingId !== null
-                ? "Edit Blog Post"
-                : "Create a Blog Post"}
+              Welcome back, Admin
             </h2>
 
             <p>
-              {editingId !== null
-                ? "Update the article information below."
-                : "Add a new article to your KSL blog."}
+              Manage articles, images and educational
+              content for the Kenyan Sign Language platform.
             </p>
+          </div>
+
+          <button
+            className="primary-action"
+            onClick={() =>
+              document
+                .getElementById("editor")
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                })
+            }
+          >
+            + Create Article
+          </button>
+
+        </section>
+
+
+        {/* STAT CARDS */}
+
+        <section className="stats-grid">
+
+          <div className="stat-card">
+
+            <div className="stat-icon purple">
+              ▤
+            </div>
+
+            <div>
+              <span>Total Articles</span>
+              <strong>{blogs.length}</strong>
+              <small>Published articles</small>
+            </div>
+
+          </div>
+
+
+          <div className="stat-card">
+
+            <div className="stat-icon green">
+              ✓
+            </div>
+
+            <div>
+              <span>Publishing Status</span>
+              <strong>Live</strong>
+              <small>Your blog is active</small>
+            </div>
+
+          </div>
+
+
+          <div className="stat-card">
+
+            <div className="stat-icon orange">
+              ◷
+            </div>
+
+            <div>
+              <span>Latest Article</span>
+
+              <strong>
+                {blogs.length > 0
+                  ? formatDate(blogs[0].published_at)
+                  : "None"}
+              </strong>
+
+              <small>
+                {blogs.length > 0
+                  ? formatTime(blogs[0].published_at)
+                  : "No articles yet"}
+              </small>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* EDITOR */}
+
+        <section
+          id="editor"
+          className="editor-section"
+        >
+
+          <div className="section-heading">
+
+            <div>
+
+              <span className="section-label">
+                CONTENT EDITOR
+              </span>
+
+              <h2>
+                {editingId !== null
+                  ? "Edit Article"
+                  : "Create New Article"}
+              </h2>
+
+              <p>
+                {editingId !== null
+                  ? "Update your existing article."
+                  : "Create and publish a new KSL article."}
+              </p>
+
+            </div>
+
+            {editingId !== null && (
+              <button
+                className="cancel-button"
+                onClick={resetForm}
+              >
+                Cancel Editing
+              </button>
+            )}
 
           </div>
 
 
           <form
-            className="admin-blog-form"
-            onSubmit={
-              handleSubmit
-            }
+            className="article-form"
+            onSubmit={handleSubmit}
           >
 
-            {/* TITLE */}
+            <div className="form-column">
 
-            <div className="admin-form-group">
+              {/* TITLE */}
 
-              <label htmlFor="blog-title">
-                Blog Title
-              </label>
+              <div className="input-group">
 
-              <input
-                id="blog-title"
-                type="text"
-                placeholder="Enter blog title"
-                value={title}
-                onChange={(
-                  event
-                ) =>
-                  setTitle(
-                    event.target.value
-                  )
-                }
-              />
+                <label htmlFor="title">
+                  Article Title
+                </label>
 
-            </div>
-
-
-            {/* AUTHOR */}
-
-            <div className="admin-form-group">
-
-              <label htmlFor="blog-author">
-                Author
-              </label>
-
-              <input
-                id="blog-author"
-                type="text"
-                placeholder="Enter author name"
-                value={author}
-                onChange={(
-                  event
-                ) =>
-                  setAuthor(
-                    event.target.value
-                  )
-                }
-              />
-
-            </div>
-
-
-            {/* COVER IMAGE */}
-
-            <div className="admin-form-group">
-
-              <label htmlFor="cover-image">
-                Cover Image
-              </label>
-
-              <input
-                id="cover-image"
-                type="file"
-                accept="image/*"
-                onChange={
-                  handleCoverImage
-                }
-              />
-
-              <small>
-                Required for new articles.
-              </small>
-
-            </div>
-
-
-            {/* COVER PREVIEW */}
-
-            {coverImagePreview && (
-
-              <div className="admin-cover-preview">
-
-                <p>
-                  Cover Image Preview
-                </p>
-
-                <img
-                  src={
-                    coverImagePreview
+                <input
+                  id="title"
+                  type="text"
+                  value={title}
+                  onChange={(e) =>
+                    setTitle(e.target.value)
                   }
-                  alt="Cover preview"
+                  placeholder="Enter a clear article title"
                 />
 
               </div>
 
-            )}
+
+              {/* AUTHOR */}
+
+              <div className="input-group">
+
+                <label htmlFor="author">
+                  Author
+                </label>
+
+                <input
+                  id="author"
+                  type="text"
+                  value={author}
+                  onChange={(e) =>
+                    setAuthor(e.target.value)
+                  }
+                  placeholder="Enter author name"
+                />
+
+              </div>
 
 
-            {/* CONTENT */}
+              {/* CONTENT */}
 
-            <div className="admin-form-group">
+              <div className="input-group">
 
-              <label htmlFor="blog-content">
-                Blog Content
-              </label>
+                <div className="label-row">
 
-              <textarea
-                id="blog-content"
-                rows="12"
-                placeholder="Write your blog article here..."
-                value={content}
-                onChange={(
-                  event
-                ) =>
-                  setContent(
-                    event.target.value
-                  )
-                }
-              />
+                  <label htmlFor="content">
+                    Article Content
+                  </label>
 
-              <small>
-                Separate paragraphs by
-                pressing Enter.
-              </small>
-
-            </div>
-
-
-            {/* OPTIONAL ARTICLE IMAGES */}
-
-            <div className="admin-form-group">
-
-              <label htmlFor="content-images">
-                Article Images
-                <span>
-                  {" "}(Optional)
-                </span>
-              </label>
-
-              <input
-                id="content-images"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={
-                  handleContentImages
-                }
-              />
-
-              <small>
-                Optional. You can add
-                multiple images or leave
-                this empty.
-              </small>
-
-            </div>
-
-
-            {/* ARTICLE IMAGE PREVIEWS */}
-
-            {contentImages.length >
-              0 && (
-
-              <div className="admin-content-images">
-
-                <p>
-                  Selected Article Images (
-                  {contentImages.length}
-                  )
-                </p>
-
-                <div className="admin-image-grid">
-
-                  {contentImages.map(
-                    (
-                      image,
-                      index
-                    ) => (
-
-                      <div
-                        className="admin-image-preview"
-                        key={`${image.preview}-${index}`}
-                      >
-
-                        <img
-                          src={
-                            image.preview
-                          }
-                          alt={`Article ${
-                            index + 1
-                          }`}
-                        />
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            removeContentImage(
-                              index
-                            )
-                          }
-                        >
-                          Remove
-                        </button>
-
-                      </div>
-
-                    )
-                  )}
+                  <span>
+                    Write your article below
+                  </span>
 
                 </div>
 
+                <textarea
+                  id="content"
+                  value={content}
+                  onChange={(e) =>
+                    setContent(e.target.value)
+                  }
+                  placeholder="Start writing your article..."
+                  rows="15"
+                />
+
               </div>
 
-            )}
+            </div>
 
 
-            {/* ERROR */}
+            {/* MEDIA COLUMN */}
 
-            {errorMessage && (
+            <div className="media-column">
 
-              <div className="admin-api-error">
-                {errorMessage}
+              {/* COVER */}
+
+              <div className="upload-card">
+
+                <div className="upload-heading">
+
+                  <div>
+                    <h3>
+                      Cover Image
+                    </h3>
+
+                    <p>
+                      Main image for the article
+                    </p>
+                  </div>
+
+                  <span className="required">
+                    Required
+                  </span>
+
+                </div>
+
+
+                <label
+                  htmlFor="coverImage"
+                  className="upload-area"
+                >
+
+                  {coverImagePreview ? (
+                    <div className="cover-preview">
+
+                      <img
+                        src={coverImagePreview}
+                        alt="Cover preview"
+                      />
+
+                      <div className="image-overlay">
+                        Change Image
+                      </div>
+
+                    </div>
+                  ) : (
+                    <>
+                      <div className="upload-icon">
+                        ↑
+                      </div>
+
+                      <strong>
+                        Upload cover image
+                      </strong>
+
+                      <span>
+                        PNG, JPG or WEBP
+                      </span>
+                    </>
+                  )}
+
+                </label>
+
+                <input
+                  id="coverImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleCoverImageChange}
+                  hidden
+                />
+
               </div>
 
-            )}
+
+              {/* ARTICLE IMAGES */}
+
+              <div className="upload-card">
+
+                <div className="upload-heading">
+
+                  <div>
+                    <h3>
+                      Article Images
+                    </h3>
+
+                    <p>
+                      Add images inside your article
+                    </p>
+                  </div>
+
+                  <span className="optional">
+                    Optional
+                  </span>
+
+                </div>
 
 
-            {/* BUTTONS */}
+                <label
+                  htmlFor="articleImages"
+                  className="small-upload-area"
+                >
 
-            <div className="admin-form-buttons">
+                  <div className="upload-icon small">
+                    +
+                  </div>
 
-              <button
-                type="submit"
-                className="admin-publish-button"
-                disabled={loading}
-              >
-                {loading
-                  ? "Please wait..."
-                  : editingId !== null
-                  ? "Update Blog Post"
-                  : "Publish Blog Post"}
-              </button>
+                  <strong>
+                    Add article images
+                  </strong>
+
+                  <span>
+                    You can select multiple images
+                  </span>
+
+                </label>
+
+                <input
+                  id="articleImages"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleContentImagesChange}
+                  hidden
+                />
 
 
-              {editingId !== null && (
+                {contentImages.length > 0 && (
+                  <div className="image-preview-grid">
+
+                    {contentImages.map(
+                      (file, index) => {
+
+                        const previewUrl =
+                          URL.createObjectURL(file);
+
+                        return (
+                          <div
+                            className="preview-item"
+                            key={`${file.name}-${index}`}
+                          >
+
+                            <img
+                              src={previewUrl}
+                              alt={`Article ${index + 1}`}
+                            />
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                removeContentImage(index)
+                              }
+                            >
+                              ×
+                            </button>
+
+                          </div>
+                        );
+                      }
+                    )}
+
+                  </div>
+                )}
+
+              </div>
+
+
+              {/* ACTIONS */}
+
+              <div className="form-actions">
 
                 <button
-                  type="button"
-                  className="admin-cancel-button"
-                  onClick={
-                    resetForm
-                  }
+                  type="submit"
+                  className="publish-button"
                   disabled={loading}
                 >
-                  Cancel Edit
+                  {loading
+                    ? "Processing..."
+                    : editingId !== null
+                    ? "Update Article"
+                    : "Publish Article"}
                 </button>
 
-              )}
+                {editingId !== null && (
+                  <button
+                    type="button"
+                    className="secondary-button"
+                    onClick={resetForm}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </button>
+                )}
+
+              </div>
 
             </div>
 
@@ -1148,205 +964,194 @@ const AdminBlog = () => {
         </section>
 
 
-        {/* PUBLISHED BLOGS */}
+        {/* ARTICLES */}
 
-        <section className="admin-published-section">
+        <section
+          id="articles"
+          className="articles-section"
+        >
 
-          <div className="admin-section-heading">
+          <div className="section-heading">
 
-            <span>
-              PUBLISHED ARTICLES
-            </span>
+            <div>
 
-            <h2>
-              Your Blog Posts
-            </h2>
+              <span className="section-label">
+                CONTENT LIBRARY
+              </span>
 
-            <p>
-              Manage articles that are
-              currently stored on this
-              website.
-            </p>
-
-          </div>
-
-
-          {loading &&
-          blogs.length === 0 ? (
-
-            <div className="admin-no-blogs">
-
-              <h3>
-                Loading Blog Posts...
-              </h3>
+              <h2>
+                Published Articles
+              </h2>
 
               <p>
-                Connecting to the
-                database.
+                Manage all articles currently available
+                on your website.
               </p>
 
             </div>
 
-          ) : blogs.length === 0 ? (
+            <div className="article-count">
+              {blogs.length} Articles
+            </div>
 
-            <div className="admin-no-blogs">
+          </div>
+
+
+          {blogs.length === 0 ? (
+
+            <div className="empty-state">
+
+              <div>
+                +
+              </div>
 
               <h3>
-                No Blog Posts Yet
+                No articles yet
               </h3>
 
               <p>
-                {errorMessage
-                  ? "There was a problem connecting to the backend."
-                  : "Create your first article using the form above."}
+                Create your first KSL article to get started.
               </p>
 
             </div>
 
           ) : (
 
-            <div className="admin-blog-list">
+            <div className="article-table">
 
-              {blogs.map(
-                (blog) => (
+              <div className="table-header">
 
-                  <article
-                    className="admin-blog-card"
-                    key={blog.id}
-                  >
+                <span>
+                  ARTICLE
+                </span>
 
-                    {/* IMAGE */}
+                <span>
+                  AUTHOR
+                </span>
 
-                    <div className="admin-blog-card-image">
+                <span>
+                  PUBLISHED
+                </span>
+
+                <span>
+                  STATUS
+                </span>
+
+                <span>
+                  ACTIONS
+                </span>
+
+              </div>
+
+
+              {blogs.map((blog) => (
+
+                <div
+                  className="article-row"
+                  key={blog.id}
+                >
+
+                  <div className="article-info">
+
+                    <div className="article-thumbnail">
 
                       {blog.cover_image ? (
-
                         <img
                           src={getImageUrl(
                             blog.cover_image
                           )}
-                          alt={
-                            blog.title
-                          }
+                          alt={blog.title}
                         />
-
                       ) : (
-
-                        <div className="admin-no-image">
-                          No Image
-                        </div>
-
+                        <span>
+                          KSL
+                        </span>
                       )}
 
                     </div>
 
-
-                    {/* CONTENT */}
-
-                    <div className="admin-blog-card-content">
-
-                      <div className="admin-blog-card-meta">
-
-                        <span>
-                          {formatDate(
-                            blog.published_at
-                          )}
-                        </span>
-
-                        <span>
-                          {formatTime(
-                            blog.published_at
-                          )}
-                        </span>
-
-                      </div>
-
+                    <div>
 
                       <h3>
                         {blog.title}
                       </h3>
 
-
-                      <p className="admin-blog-author">
-
-                        By{" "}
-
-                        <strong>
-                          {blog.author ||
-                            "KSL Team"}
-                        </strong>
-
+                      <p>
+                        Article #{blog.id}
                       </p>
-
-
-                      <p className="admin-blog-preview">
-
-                        {blog.content &&
-                        blog.content.length >
-                          180
-                          ? `${blog.content.substring(
-                              0,
-                              180
-                            )}...`
-                          : blog.content}
-
-                      </p>
-
-
-                      <div className="admin-card-actions">
-
-                        <button
-                          type="button"
-                          className="admin-edit-button"
-                          onClick={() =>
-                            handleEdit(
-                              blog
-                            )
-                          }
-                          disabled={
-                            loading
-                          }
-                        >
-                          Edit
-                        </button>
-
-
-                        <button
-                          type="button"
-                          className="admin-delete-button"
-                          onClick={() =>
-                            handleDelete(
-                              blog.id
-                            )
-                          }
-                          disabled={
-                            loading
-                          }
-                        >
-                          Delete
-                        </button>
-
-
-                        <button
-                          type="button"
-                          className="admin-read-button"
-                          onClick={() =>
-                            navigate(
-                              `/blog/${blog.id}`
-                            )
-                          }
-                        >
-                          Read
-                        </button>
-
-                      </div>
 
                     </div>
 
-                  </article>
+                  </div>
 
-                )
-              )}
+
+                  <div className="author-column">
+                    {blog.author}
+                  </div>
+
+
+                  <div className="date-column">
+
+                    <strong>
+                      {formatDate(
+                        blog.published_at
+                      )}
+                    </strong>
+
+                    <span>
+                      {formatTime(
+                        blog.published_at
+                      )}
+                    </span>
+
+                  </div>
+
+
+                  <div>
+
+                    <span className="status-badge">
+                      ● Published
+                    </span>
+
+                  </div>
+
+
+                  <div className="row-actions">
+
+                    <button
+                      className="edit-action"
+                      onClick={() =>
+                        handleEdit(blog)
+                      }
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="read-action"
+                      onClick={() =>
+                        navigate(
+                          `/blog/${blog.id}`
+                        )
+                      }
+                    >
+                      View
+                    </button>
+
+                    <button
+                      className="delete-action"
+                      onClick={() =>
+                        handleDelete(blog.id)
+                      }
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
+                </div>
+
+              ))}
 
             </div>
 
@@ -1358,6 +1163,6 @@ const AdminBlog = () => {
 
     </div>
   );
-};
+}
 
 export default AdminBlog;

@@ -1,105 +1,126 @@
-import "./Classes.css";
-
-const Classes = () => {
+function Classes() {
   const classes = [
     {
-      level: "BEGINNER",
-      title: "Basic KSL Class",
+      number: "01",
+      level: "Beginner",
+      title: "Start Your KSL Journey",
       description:
-        "Learn the basics of Kenyan Sign Language, including common signs, greetings, numbers, and everyday communication.",
-      duration: "4 Weeks",
-      price: "KSh 1,500",
+        "Learn the basic signs, greetings, numbers, and everyday expressions you need to start communicating in Kenyan Sign Language.",
+      topics: [
+        "Basic signs",
+        "Greetings",
+        "Numbers",
+        "Everyday communication",
+      ],
     },
     {
-      level: "INTERMEDIATE",
-      title: "Intermediate KSL Class",
+      number: "02",
+      level: "Intermediate",
+      title: "Build Your Communication Skills",
       description:
-        "Improve your KSL skills and learn more advanced signs, sentences, conversations, and expressions.",
-      duration: "6 Weeks",
-      price: "KSh 2,500",
+        "Improve your vocabulary and learn how to communicate more naturally in everyday conversations.",
+      topics: [
+        "Expanded vocabulary",
+        "Sentence structure",
+        "Daily conversations",
+        "Practical communication",
+      ],
     },
     {
-      level: "ADVANCED",
-      title: "Advanced KSL Class",
+      number: "03",
+      level: "Private Learning",
+      title: "Learn At Your Own Pace",
       description:
-        "Develop stronger communication skills and gain confidence using Kenyan Sign Language in real situations.",
-      duration: "8 Weeks",
-      price: "KSh 3,500",
+        "Get personalized guidance based on your goals, experience, and preferred learning pace.",
+      topics: [
+        "One-on-one sessions",
+        "Personalized lessons",
+        "Flexible learning",
+        "Individual support",
+      ],
     },
   ];
-
-  const handleBookNow = (selectedClass) => {
-    const message = `Hello, I would like to book the ${selectedClass.title}.`;
-
-    const phoneNumber = "254700806728";
-
-    const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-
-    window.open(whatsappLink, "_blank");
-  };
 
   return (
     <section className="classes-section" id="classes">
       <div className="classes-container">
 
-        {/* Heading */}
-        <div className="classes-heading">
-          <span>OUR CLASSES</span>
+        {/* HEADER */}
+        <div className="classes-header">
 
-          <h1>
-            Choose Your
-            <strong> KSL Class</strong>
-          </h1>
+          <div>
+            <span className="classes-label">
+              Our Classes
+            </span>
+
+            <h2>
+              Learn KSL at
+              <span> your pace.</span>
+            </h2>
+          </div>
 
           <p>
-            Start learning Kenyan Sign Language from the basics
-            and develop your communication skills step by step.
+            Whether you are starting from zero or looking to improve
+            your communication skills, choose a learning path that
+            works for you.
           </p>
+
         </div>
 
-        {/* Classes */}
+        {/* CLASS CARDS */}
         <div className="classes-grid">
-          {classes.map((item, index) => (
-            <div className="class-card" key={index}>
 
-              <div className="class-level">
-                {item.level}
+          {classes.map((item) => (
+            <article
+              className="class-card"
+              key={item.number}
+            >
+
+              <div className="class-card-top">
+                <span className="class-number">
+                  {item.number}
+                </span>
+
+                <span className="class-level">
+                  {item.level}
+                </span>
               </div>
 
-              <h2>{item.title}</h2>
+              <h3>
+                {item.title}
+              </h3>
 
-              <p>{item.description}</p>
+              <p className="class-description">
+                {item.description}
+              </p>
 
-              <div className="class-details">
+              <div className="class-divider"></div>
 
-                <div>
-                  <span>Duration</span>
-                  <strong>{item.duration}</strong>
-                </div>
+              <ul>
+                {item.topics.map((topic) => (
+                  <li key={topic}>
+                    <span>✓</span>
+                    {topic}
+                  </li>
+                ))}
+              </ul>
 
-                <div>
-                  <span>Price</span>
-                  <strong>{item.price}</strong>
-                </div>
-
-              </div>
-
-              <button
-                className="class-book-btn"
-                onClick={() => handleBookNow(item)}
+              <a
+                href="#services"
+                className="class-button"
               >
-                Book Now
-              </button>
+                View Learning Options
+                <span>→</span>
+              </a>
 
-            </div>
+            </article>
           ))}
+
         </div>
 
       </div>
     </section>
   );
-};
+}
 
 export default Classes;

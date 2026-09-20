@@ -1,64 +1,88 @@
+import { Link } from "react-router-dom";
+
 function Hero() {
   return (
-    <section className="hero" id="home">
+    <section className="hero-section" id="home">
+      <div className="hero-container">
 
-      <div className="hero-content">
+        {/* LEFT SIDE */}
+        <div className="hero-content">
 
-        <div className="hero-text">
-
-          <div className="floating-label">
-            communicate without barriers.
+          <div className="hero-label">
+            <span></span>
+            Learn • Connect • Communicate
           </div>
 
-          <h1>
-            Master kenyan
+          <h1 className="hero-title">
+            Learn Kenyan
             <br />
-            Sign Language
+            <span>Sign Language</span>
+            <br />
+            with confidence.
           </h1>
 
-          <p>
-            Learn Kenyan Sign Language, improve communication,
-            and connect with others through an inclusive
-            and practical learning experience.
+          <p className="hero-description">
+            Learn Kenyan Sign Language through simple, practical
+            and accessible lessons designed to help you communicate
+            with confidence.
           </p>
 
           <div className="hero-buttons">
-            <button className="primary-button">
-              Learn With Us
-            </button>
 
-            <button className="secondary-button">
-              Book a Class with lucia
-            </button>
+            <Link
+              to="/#classes"
+              className="hero-btn hero-btn-primary"
+            >
+              Start Learning
+            </Link>
+
+            <Link
+              to="/#services"
+              className="hero-btn hero-btn-secondary"
+            >
+              Explore Classes
+            </Link>
+
           </div>
 
         </div>
 
-        <div className="hero-image-container">
+        {/* RIGHT SIDE */}
+        <div className="hero-visual">
 
-          <div className="hero-image-glow"></div>
+          <div className="hero-main-card">
 
-          <img
-            src="src/assets/seda.jpg"
-            alt="Person learning and communicating"
-            className="hero-image"
-          />
+            <img
+              src="/your-image.jpg"
+              alt="Kenyan Sign Language"
+              className="hero-image"
+            />
 
-          <div className="floating-card">
-            <span>Learn</span>
-            <strong>Connect</strong>
-            <span>Communicate</span>
+            <div className="hero-image-overlay">
+              <span>KSL</span>
+
+              <h2>
+                Kenyan
+                <br />
+                Sign Language
+              </h2>
+            </div>
+
           </div>
+
+          {/* SERVICES BUTTON */}
+          <Link
+            to="/#services"
+            className="hero-service-button"
+          >
+            <span>Learn with confidence</span>
+            <small>Step-by-step KSL lessons</small>
+            <strong>→</strong>
+          </Link>
 
         </div>
 
       </div>
-
-      <div className="hero-scroll">
-        <span>Scroll to explore</span>
-        <div className="scroll-line"></div>
-      </div>
-
     </section>
   );
 }

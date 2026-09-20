@@ -3,6 +3,7 @@ const path = require("path");
 const multer = require("multer");
 
 const db = require("../config/database");
+const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -131,6 +132,7 @@ router.get("/:id", (req, res) => {
 
 router.post(
   "/",
+   authMiddleware,
   upload.fields([
     {
       name: "cover_image",
@@ -307,6 +309,7 @@ router.post(
 
 router.put(
   "/:id",
+  authMiddleware,
   upload.fields([
     {
       name: "cover_image",
@@ -505,7 +508,9 @@ router.put(
 // DELETE BLOG POST
 // ========================================
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", 
+  authMiddleware,
+  (req, res) => {
 
   const { id } = req.params;
 

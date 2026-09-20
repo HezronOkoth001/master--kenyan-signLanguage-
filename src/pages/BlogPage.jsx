@@ -5,75 +5,52 @@ import "./BlogPage.css";
 const API_URL = "http://localhost:5000/api/blogs";
 const SERVER_URL = "http://localhost:5000";
 
-const BlogPage = () => {
+function BlogPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
 
-  // ========================================
-  // CONVERT IMAGE PATH TO FULL URL
-  // ========================================
+  const getImageUrl = (image) => {
+    if (!image) return "";
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) {
-      return "";
+    if (
+      image.startsWith("http://") ||
+      image.startsWith("https://") ||
+      image.startsWith("data:image")
+    ) {
+      return image;
     }
 
-    // Old Base64 images
-    if (imagePath.startsWith("data:")) {
-      return imagePath;
-    }
-
-    // Already a complete URL
-    if (imagePath.startsWith("http")) {
-      return imagePath;
-    }
-
-    // New Multer images
-    if (imagePath.startsWith("/uploads/")) {
-      return `${SERVER_URL}${imagePath}`;
-    }
-
-    return imagePath;
+    return `${SERVER_URL}${image}`;
   };
 
-  // ========================================
-  // LOAD BLOGS
-  // ========================================
+  const formatDate = (date) => {
+    if (!date) return "";
+
+    return new Date(date).toLocaleDateString("en-KE", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
 
   useEffect(() => {
     const loadBlogs = async () => {
       try {
         setLoading(true);
-        setErrorMessage("");
 
         const response = await fetch(API_URL);
 
         if (!response.ok) {
-          throw new Error(
-            `Server returned status ${response.status}`
-          );
+          throw new Error("Unable to load articles.");
         }
 
         const data = await response.json();
 
-        console.log("Public blog posts:", data);
-
-        if (!Array.isArray(data)) {
-          throw new Error(
-            "Invalid blog data received from server."
-          );
-        }
-
         setBlogs(data);
       } catch (error) {
-        console.error("Error loading blogs:", error);
-
-        setErrorMessage(
-          "Unable to load blog posts. Please try again later."
-        );
-
-        setBlogs([]);
+        console.error("Blog loading error:", error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -82,219 +59,542 @@ const BlogPage = () => {
     loadBlogs();
   }, []);
 
-  // ========================================
-  // FORMAT DATE
-  // ========================================
+  if (loading) {
+    return (
+      <div className="blog-loading">
+        <div className="blog-loader"></div>
+        <p>Loading KSL articles...</p>
+      </div>
+    );
+  }
 
-  const formatDate = (dateValue) => {
-    if (!dateValue) return "";
+  if (error) {
+    return (
+      <div className="blog-error">
+        <div>
+          <span>!</span>
+          <h1>Unable to load articles</h1>
+          <p>{error}</p>
 
-    const date = new Date(dateValue);
+          <button onClick={() => window.location.reload()}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-    if (Number.isNaN(date.getTime())) {
-      return "";
-    }
-
-    return date.toLocaleDateString("en-KE", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  // ========================================
-  // PAGE
-  // ========================================
+  const featuredArticle = blogs[0];
+  const remainingArticles = blogs.slice(1);
 
   return (
     <div className="blog-page">
 
-      {/* ========================================
+      {/* =================================
           HEADER
-      ======================================== */}
+      ================================= */}
 
-      <section className="blog-page-header">
+      <header className="blog-navbar">
 
-        <span>OUR BLOG</span>
+        <div className="blog-nav-inner">
 
-        <h1>
-          Learn More About
-          <strong> Kenyan Sign Language</strong>
-        </h1>
+          <Link to="/" className="blog-brand">
 
-        <p>
-          Explore articles, guides, tips, and useful
-          information about Kenyan Sign Language
-          and inclusive communication.
-        </p>
+            <div className="blog-brand-icon">
+              KSL
+            </div>
+
+            <div>
+              <strong>
+                Kenyan Sign Language
+              </strong>
+
+              <span>
+                Learning • Community • Awareness
+              </span>
+            </div>
+
+          </Link>
+
+          <nav className="blog-navigation">
+
+            <Link to="/">
+              Home
+            </Link>
+
+            <a href="#articles">
+              Articles
+            </a>
+
+            <a href="#about-blog">
+              About
+            </a>
+
+          </nav>
+
+          <Link
+            to="/"
+            className="blog-home-button"
+          >
+            Visit Website
+          </Link>
+
+        </div>
+
+      </header>
+
+
+      {/* =================================
+          HERO
+      ================================= */}
+
+      <section className="blog-hero">
+
+        <div className="blog-hero-pattern"></div>
+
+        <div className="blog-hero-inner">
+
+          <div className="blog-hero-content">
+
+            <span className="blog-eyebrow">
+              KSL JOURNAL
+            </span>
+
+            <h1>
+              Learn.
+              <br />
+              Connect.
+              <br />
+              Understand.
+            </h1>
+
+            <p>
+              Discover stories, educational resources
+              and insights about Kenyan Sign Language
+              and the Deaf community.
+            </p>
+
+            <a
+              href="#articles"
+              className="explore-button"
+            >
+              Explore Articles
+              <span>↓</span>
+            </a>
+
+          </div>
+
+          <div className="hero-decoration">
+
+            <div className="hero-circle large"></div>
+
+            <div className="hero-circle medium"></div>
+
+            <div className="hero-circle small"></div>
+
+            <div className="hero-card">
+
+              <span>
+                KSL
+              </span>
+
+              <strong>
+                Communication
+              </strong>
+
+              <p>
+                begins with understanding.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </section>
 
 
-      {/* ========================================
-          BLOG CONTENT
-      ======================================== */}
+      {/* =================================
+          FEATURED ARTICLE
+      ================================= */}
 
-      <section className="blog-page-content">
+      {featuredArticle && (
 
-        {/* LOADING */}
+        <section className="featured-section">
 
-        {loading && (
-          <div className="no-blogs">
+          <div className="featured-inner">
 
-            <h2>
-              Loading Blog Posts...
-            </h2>
+            <div className="section-top">
 
-            <p>
-              Please wait while we load the latest articles.
-            </p>
+              <div>
+
+                <span>
+                  FEATURED ARTICLE
+                </span>
+
+                <h2>
+                  From the KSL Journal
+                </h2>
+
+              </div>
+
+            </div>
+
+
+            <Link
+              to={`/blog/${featuredArticle.id}`}
+              className="featured-card"
+            >
+
+              <div className="featured-image">
+
+                {featuredArticle.cover_image ? (
+                  <img
+                    src={getImageUrl(
+                      featuredArticle.cover_image
+                    )}
+                    alt={featuredArticle.title}
+                  />
+                ) : (
+                  <div className="image-placeholder">
+                    KSL
+                  </div>
+                )}
+
+                <div className="featured-tag">
+                  Latest
+                </div>
+
+              </div>
+
+
+              <div className="featured-content">
+
+                <span className="featured-date">
+                  {formatDate(
+                    featuredArticle.published_at
+                  )}
+                </span>
+
+                <h3>
+                  {featuredArticle.title}
+                </h3>
+
+                <p>
+                  {featuredArticle.content
+                    ? featuredArticle.content.length > 230
+                      ? `${featuredArticle.content.substring(
+                          0,
+                          230
+                        )}...`
+                      : featuredArticle.content
+                    : "Discover this article from the KSL Journal."}
+                </p>
+
+
+                <div className="featured-author">
+
+                  <div className="author-circle">
+                    {featuredArticle.author
+                      ? featuredArticle.author
+                          .charAt(0)
+                          .toUpperCase()
+                      : "K"}
+                  </div>
+
+                  <div>
+
+                    <strong>
+                      {featuredArticle.author}
+                    </strong>
+
+                    <span>
+                      KSL Journal
+                    </span>
+
+                  </div>
+
+                  <div className="featured-arrow">
+                    →
+                  </div>
+
+                </div>
+
+              </div>
+
+            </Link>
 
           </div>
-        )}
+
+        </section>
+      )}
 
 
-        {/* ERROR */}
+      {/* =================================
+          ARTICLES
+      ================================= */}
 
-        {!loading && errorMessage && (
-          <div className="no-blogs">
+      <section
+        id="articles"
+        className="articles-section"
+      >
 
-            <h2>
-              Something Went Wrong
-            </h2>
+        <div className="articles-inner">
 
-            <p>
-              {errorMessage}
-            </p>
+          <div className="articles-heading">
 
-          </div>
-        )}
+            <div>
 
-
-        {/* NO BLOGS */}
-
-        {!loading &&
-          !errorMessage &&
-          blogs.length === 0 && (
-
-            <div className="no-blogs">
+              <span>
+                EXPLORE THE JOURNAL
+              </span>
 
               <h2>
-                No Blog Posts Yet
+                Latest Articles
               </h2>
 
               <p>
-                New articles will appear here when
-                they are published.
+                Practical knowledge, stories and
+                resources about Kenyan Sign Language.
               </p>
 
             </div>
-          )}
+
+            <div className="article-number">
+              {blogs.length}{" "}
+              {blogs.length === 1
+                ? "Article"
+                : "Articles"}
+            </div>
+
+          </div>
 
 
-        {/* BLOG POSTS */}
+          {remainingArticles.length > 0 ? (
 
-        {!loading &&
-          !errorMessage &&
-          blogs.length > 0 && (
+            <div className="blog-grid">
 
-            <div className="blog-page-grid">
+              {remainingArticles.map((blog) => (
 
-              {blogs.map((blog) => (
-
-                <article
-                  className="blog-page-card"
+                <Link
+                  to={`/blog/${blog.id}`}
+                  className="blog-card"
                   key={blog.id}
                 >
 
-                  {/* IMAGE */}
-
-                  <div className="blog-page-image">
+                  <div className="blog-card-image">
 
                     {blog.cover_image ? (
-
                       <img
                         src={getImageUrl(
                           blog.cover_image
                         )}
                         alt={blog.title}
                       />
-
                     ) : (
-
-                      <div className="blog-page-no-image">
-                        No Image
+                      <div className="image-placeholder">
+                        KSL
                       </div>
-
                     )}
+
+                    <span>
+                      KSL
+                    </span>
 
                   </div>
 
 
-                  {/* CONTENT */}
+                  <div className="blog-card-content">
 
-                  <div className="blog-page-card-content">
+                    <div className="card-meta">
 
-                    {blog.published_at && (
-                      <span className="blog-page-date">
+                      <span>
                         {formatDate(
                           blog.published_at
                         )}
                       </span>
-                    )}
+
+                      <span>
+                        •
+                      </span>
+
+                      <span>
+                        KSL Journal
+                      </span>
+
+                    </div>
 
 
-                    <h2>
+                    <h3>
                       {blog.title}
-                    </h2>
-
-
-                    <p className="blog-page-author">
-
-                      By{" "}
-
-                      <strong>
-                        {blog.author || "KSL Team"}
-                      </strong>
-
-                    </p>
+                    </h3>
 
 
                     <p>
-
-                      {blog.content &&
-                      blog.content.length > 180
-
-                        ? `${blog.content.substring(
-                            0,
-                            180
-                          )}...`
-
-                        : blog.content}
-
+                      {blog.content
+                        ? blog.content.length > 140
+                          ? `${blog.content.substring(
+                              0,
+                              140
+                            )}...`
+                          : blog.content
+                        : "Read this article to learn more about Kenyan Sign Language."}
                     </p>
 
 
-                    <Link
-                      to={`/blog/${blog.id}`}
-                      className="blog-read-button"
-                    >
-                      Read Article →
-                    </Link>
+                    <div className="read-link">
+                      Read article
+                      <span>
+                        →
+                      </span>
+                    </div>
 
                   </div>
 
-                </article>
+                </Link>
 
               ))}
 
             </div>
+
+          ) : (
+
+            <div className="no-articles">
+
+              <div>
+                KSL
+              </div>
+
+              <h3>
+                More articles coming soon
+              </h3>
+
+              <p>
+                We are preparing more educational
+                content for the KSL community.
+              </p>
+
+            </div>
+
           )}
+
+        </div>
 
       </section>
 
+
+      {/* =================================
+          ABOUT BLOG
+      ================================= */}
+
+      <section
+        id="about-blog"
+        className="blog-about"
+      >
+
+        <div className="blog-about-inner">
+
+          <div className="about-mark">
+            KSL
+          </div>
+
+          <div className="about-text">
+
+            <span>
+              ABOUT THE JOURNAL
+            </span>
+
+            <h2>
+              A place to learn and connect
+            </h2>
+
+            <p>
+              The KSL Journal is a space for sharing
+              knowledge, educational resources and
+              stories that help people understand
+              Kenyan Sign Language and communicate
+              more inclusively.
+            </p>
+
+          </div>
+
+          <div className="about-stat">
+
+            <strong>
+              {blogs.length}
+            </strong>
+
+            <span>
+              Published
+              <br />
+              Articles
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =================================
+          FOOTER
+      ================================= */}
+
+      <footer className="blog-footer">
+
+        <div className="blog-footer-inner">
+
+          <div className="footer-brand-area">
+
+            <div className="footer-logo">
+              KSL
+            </div>
+
+            <div>
+
+              <strong>
+                Kenyan Sign Language
+              </strong>
+
+              <p>
+                Education • Awareness • Community
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div className="footer-links">
+
+            <Link to="/">
+              Home
+            </Link>
+
+            <Link to="/blog">
+              Articles
+            </Link>
+
+            <a href="#about-blog">
+              About
+            </a>
+
+          </div>
+
+
+          <p className="copyright">
+            © {new Date().getFullYear()} Kenyan Sign
+            Language. All rights reserved.
+          </p>
+
+        </div>
+
+      </footer>
+
     </div>
   );
-};
+}
 
 export default BlogPage;
