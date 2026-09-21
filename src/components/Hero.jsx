@@ -53,7 +53,7 @@ function Hero() {
           <div className="hero-main-card">
 
             <img
-              src="/your-image.jpg"
+              src="/ksl-hero.jpg"
               alt="Kenyan Sign Language"
               className="hero-image"
             />
