@@ -6,6 +6,16 @@ const db = require("../config/database");
 
 const router = express.Router();
 
+const COOKIE_NAME = "kslAdminSession";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  maxAge: 2 * 60 * 60 * 1000,
+  path: "/",
+};
+
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -23,10 +33,7 @@ router.post("/login", (req, res) => {
 
   db.query(sql, [email], async (err, results) => {
     if (err) {
-      console.error(
-        "Login database error:",
-        err.message
-      );
+      console.error("Login database error:", err.message);
 
       return res.status(500).json({
         message: "Server error",
@@ -52,7 +59,6 @@ router.post("/login", (req, res) => {
       });
     }
 
-    // Create JWT token
     const token = jwt.sign(
       {
         id: admin.id,
@@ -64,15 +70,28 @@ router.post("/login", (req, res) => {
       }
     );
 
-    // Send token to frontend
-    res.json({
+    res.cookie(COOKIE_NAME, token, cookieOptions);
+
+    return res.json({
       message: "Login successful",
-      token,
       admin: {
         id: admin.id,
         email: admin.email,
       },
     });
+  });
+});
+
+router.post("/logout", (req, res) => {
+  res.clearCookie(COOKIE_NAME, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
+
+  return res.json({
+    message: "Logout successful",
   });
 });
 
