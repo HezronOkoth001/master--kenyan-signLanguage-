@@ -1,167 +1,200 @@
-# Kenyan Sign Language (KSL)
+# Master Kenyan Sign Language
 
-A welcoming digital platform for learning, promoting, and practicing Kenyan Sign Language (KSL). This project is designed to help people understand the importance of communication access, connect with the deaf community, and book KSL training, classes, or consultations.
+A modern web platform for learning, promoting, and practicing Kenyan Sign Language (KSL). The project combines a public-facing marketing and education website with an admin-managed blog and content system.
 
 ## Overview
 
-This web application is a modern landing page for a Kenyan Sign Language business and educational platform. It highlights the mission of making communication more inclusive and easier for hearing and non-hearing communities to connect.
+Master Kenyan Sign Language is designed to make communication more accessible and inclusive by helping people learn KSL, understand the value of sign language in Kenya, and connect with the deaf community through clear, engaging information.
 
-The website serves as a digital front door for:
+This project includes:
 
-- learning about Kenyan Sign Language
-- understanding the mission and value of inclusivity
-- exploring available training and consultation services
-- choosing beginner, intermediate, or advanced classes
-- contacting the business through WhatsApp or email
+- A responsive landing page and service showcase
+- Course and class information for learners
+- A contact flow using WhatsApp and email
+- A blog and article system for educational content
+- An admin dashboard for managing blog posts
 
-## Why this project exists
+## Features
 
-Many people want to learn sign language but do not know where to start. This platform helps by giving them a simple, friendly, and accessible introduction to KSL and by making it easy to reach out for classes or support.
+- Hero section with a strong inclusivity and communication message
+- About section explaining the mission and impact of KSL
+- Service and training offerings with pricing and booking links
+- Class information for beginner, intermediate, and advanced learners
+- Contact form that opens WhatsApp with a pre-filled message
+- Blog page and article detail pages
+- Admin login and content management dashboard
+- Dark mode support for the frontend
+- Image upload support for blog articles and cover images
 
-## What the app does
+## Tech Stack
 
-The app is a front-end learning and marketing website. It does not provide a sign recognition system or an online classroom backend. Instead, it helps promote the business and makes the learning journey easy to understand.
-
-Users can:
-
-- read about the importance of KSL
-- browse available services and class options
-- understand pricing and course duration
-- book a service or class through WhatsApp
-- send a message directly to the business
-
-## Key features
-
-- Hero section with a strong communication-focused message
-- About section explaining the mission and inclusion goals
-- Services section with pricing and booking buttons
-- Classes section with level-based course offerings
-- Contact section with phone, email, WhatsApp, and location details
-- Form that sends the user’s message directly to WhatsApp
-- Responsive layout for mobile and desktop screens
-- Video section showcasing visual communication and learning
-
-## User journey
-
-1. A visitor opens the homepage.
-2. They see the main message: communication without barriers.
-3. They learn about the purpose and mission of the platform.
-4. They explore the services and KSL classes available.
-5. If interested, they click a booking button.
-6. A WhatsApp chat opens with a pre-filled message.
-7. The user can continue the conversation and book a class or request help.
-
-## Technologies used
-
+### Frontend
 - React
 - Vite
 - JavaScript
 - CSS
 - HTML
+- React Router
+- React Helmet Async
 
-## Project structure
+### Backend
+- Node.js
+- Express.js
+- MySQL
+- Multer for file uploads
+- JWT for admin authentication
+- Bcrypt for password hashing
+- CORS and dotenv support
+
+## Project Structure
 
 ```bash
 master--kenyan-signLanguage-/
 ├── public/
+├── server/
+│   ├── config/
+│   ├── middleware/
+│   ├── routes/
+│   ├── uploads/
+│   ├── .gitignore
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js
 ├── src/
-│   ├── assets/
 │   ├── components/
-│   ├── App.jsx
+│   ├── pages/
 │   ├── App.css
-│   ├── index.css
-│   └── main.jsx
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── .gitignore
+├── eslint.config.js
 ├── index.html
 ├── package.json
-├── vite.config.js
-├── eslint.config.js
-├── README.md
 ├── package-lock.json
-└── .gitignore
+├── README.md
+├── vite.config.js
+└── .env
 ```
 
-## Main components
+## Prerequisites
 
-- Navbar: top navigation bar
-- Hero: headline and brand introduction
-- VideoSection: demonstration of visual communication
-- About: mission and inclusion message
-- Services: training and consultation offers
-- Classes: beginner, intermediate, and advanced KSL classes
-- Contact: business contact details and message form
+Before running the project, make sure you have:
 
-## Booking and contact flow
+- Node.js 18+
+- npm
+- MySQL database running locally
+- A configured `.env` file for the backend
 
-The website includes WhatsApp booking buttons for services and classes. When a user clicks Book Now, the app creates a WhatsApp link using a phone number and sends a pre-filled message such as:
+## Frontend Setup
 
-```text
-Hello, I would like to book KSL Training. The price is KSh 1,500.
-```
-
-The contact form also collects a user’s name, email, and message, then opens WhatsApp with the message ready to send.
-
-## Getting started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/HezronOkoth001/master--kenyan-signLanguage-.git
-```
-
-### 2. Open the project folder
-
-```bash
-cd master--kenyan-signLanguage-
-```
-
-### 3. Install dependencies
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-### 4. Start the development server
+2. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-### 5. Open the app in your browser
-
-The app usually runs at:
+3. Open the app in the browser at:
 
 ```text
 http://localhost:5173
 ```
 
+## Backend Setup
+
+1. Go into the server folder:
+
+```bash
+cd server
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env` file in the `server` directory with the following values:
+
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=kenya_sign_language
+DB_PORT=3306
+JWT_SECRET=your_super_secret_key
+```
+
+4. Start the backend server:
+
+```bash
+node server.js
+```
+
+The backend runs on:
+
+```text
+http://localhost:5000
+```
+
+## Admin Access
+
+The project includes an admin dashboard for managing blog content.
+
+- Public blog route: `/blog`
+- Admin login route: `/admin/login`
+- Admin dashboard: `/admin/blog`
+
+Admin authentication is handled through the backend API using JWT tokens and a MySQL `admins` table.
+
+## Blog System
+
+The backend supports:
+
+- Fetching all blog posts
+- Viewing a single article
+- Creating new blog posts
+- Updating posts
+- Deleting posts
+- Uploading cover images and article images
+
+Blog media is served from the `server/uploads` directory.
+
+## Contact and Booking Flow
+
+The site includes WhatsApp and email contact actions. The contact form creates a WhatsApp message that is ready to send to the business.
+
+Example contact details used in the project:
+
+- Phone: +254 795 592 258
+- WhatsApp: wa.me/254795592258
+- Email: luciaseda354@gmail.com
+- Location: Nairobi, Kenya
+
 ## Notes
 
-- This is a front-end website and does not include a backend database or authentication system.
-- WhatsApp is used as the main communication channel for enquiries and bookings.
-- The video section currently contains a sample video placeholder and should later be replaced with original KSL learning content.
+- This project is primarily a frontend marketing and education website with an admin-managed content layer.
+- The backend is required for blog management and admin authentication.
+- Database tables must exist for the backend to function properly.
 
-## Future enhancements
+## Future Improvements
 
-- add a lesson library with common KSL vocabulary
-- add a quiz system for learners
-- add a blog or knowledge section
-- add online class booking with a backend
-- create dedicated pages for each service and class
-- replace sample media with original Kenyan Sign Language resources
-
-## Contact
-
-The project includes contact information for the KSL business, including:
-
-- phone number
-- WhatsApp support
-- email address
-- location in Nairobi, Kenya
+- Add a dedicated KSL lesson library
+- Add quizzes and progress tracking
+- Expand the blog with more Kenyan sign language resources
+- Improve booking and enrollment flows
+- Add stronger admin management and analytics
 
 ## License
 
-This project does not currently include a license file. If you plan to share or publish it publicly, you may want to add an appropriate license such as MIT or Apache 2.0.
+This repository does not currently include a license file. If you plan to publish or distribute the project publicly, consider adding an open-source license such as MIT.
 
 ## Summary
 
-This app is a modern, inclusive, and friendly platform for Kenyan Sign Language learning and communication. Its main goal is to help people understand KSL, connect with the deaf community, and access learning opportunities more easily.
+Master Kenyan Sign Language is a practical and inclusive project that promotes Kenyan Sign Language education, awareness, and communication access. It combines marketing, educational content, and a working admin blog backend to support the broader mission of accessibility in Kenya.
