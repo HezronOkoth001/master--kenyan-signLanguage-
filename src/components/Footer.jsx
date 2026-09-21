@@ -19,6 +19,14 @@ const Footer = () => {
           <p className="footer-location">
             Nairobi, Kenya
           </p>
+          <a
+            className="footer-map"
+            href="https://www.google.com/maps/search/?api=1&query=Nairobi%2C%20Kenya"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View on map →
+          </a>
         </div>
 
         {/* Quick Links */}
@@ -47,12 +55,12 @@ const Footer = () => {
         <div className="footer-column">
           <h3>Contact Us</h3>
 
-          <a href="mailto:info@ksl.com">
-            info@ksl.com
+          <a className="footer-contact-link" href="mailto:luciaseda354@gmail.com">
+            luciaseda354@gmail.com
           </a>
 
-          <a href="tel:+254700806728">
-            +254 700 806 728
+          <a className="footer-contact-link" href="tel:+254795592258">
+            +254 795 592 258
           </a>
 
           <p>
