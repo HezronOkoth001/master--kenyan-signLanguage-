@@ -42,11 +42,16 @@ function VideoSection() {
           <div className="video-frame">
 
             <video
+            autoPlay
+              loop
+              muted
+              playsInline
               controls
               preload="metadata"
+              poster="/WIN_20230830_11_51_47_Pro.jpg"
             >
               <source
-                src="/a9b47f3f-a957-4018-ada1-7fcdfeb80db0.mp4"
+                src="/public/WIN_20230830_11_51_47_Pro.mp4"
                 type="video/mp4"
               />
 
