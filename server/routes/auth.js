@@ -12,7 +12,7 @@ const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: "lax",
-  maxAge: 2 * 60 * 60 * 1000,
+  maxAge: 30 * 60 * 1000,
   path: "/",
 };
 
@@ -66,7 +66,7 @@ router.post("/login", (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "2h",
+        expiresIn: "30m",
       }
     );
 
