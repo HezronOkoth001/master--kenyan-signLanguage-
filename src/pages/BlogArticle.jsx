@@ -4,8 +4,8 @@ import { Helmet } from "react-helmet-async";
 
 import "./BlogArticle.css";
 
-const API_URL = "http://localhost:5000/api/blogs";
-const SERVER_URL = "http://localhost:5000";
+const SERVER_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${SERVER_URL}/api/blogs`;
 
 function BlogArticle() {
   const { id } = useParams();

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 function Blog() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +13,7 @@ function Blog() {
     const fetchArticles = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/blogs"
+          `${API_URL}/api/blog`
         );
 
         const data = await response.json();
@@ -36,7 +40,7 @@ function Blog() {
       return image;
     }
 
-    return `http://localhost:5000${image}`;
+    return `${API_URL}${image}`;
   };
 
   return (

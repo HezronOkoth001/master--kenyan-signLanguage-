@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminBlog.css";
 
-const API_URL = "http://localhost:5000/api/blogs";
-const SERVER_URL = "http://localhost:5000";
+const SERVER_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${SERVER_URL}/api/blogs`;
+
 
 function AdminBlog() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function AdminBlog() {
 
   const logoutAndRedirect = async () => {
     try {
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch(`${SERVER_URL}/api/auth/logout`, { 
         method: "POST",
         credentials: "include",
       });
@@ -54,7 +55,7 @@ function AdminBlog() {
   useEffect(() => {
     const verifySession = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/me", {
+        const response = await fetch(`${SERVER_URL}/api/auth/me`, {
           credentials: "include",
         });
 

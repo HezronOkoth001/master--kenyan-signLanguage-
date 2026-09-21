@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./BlogPage.css";
 
-const API_URL = "http://localhost:5000/api/blogs";
-const SERVER_URL = "http://localhost:5000";
+const SERVER_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${SERVER_URL}/api/blogs`;
 
 function BlogPage() {
   const [blogs, setBlogs] = useState([]);
