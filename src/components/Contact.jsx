@@ -112,6 +112,14 @@ ${message}`;
                   <span>Location</span>
 
                   <p>Nairobi, Kenya</p>
+                  <a
+                    className="contact-map"
+                    href="https://www.google.com/maps/search/?api=1&query=Nairobi%2C%20Kenya"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View location on map →
+                  </a>
                 </div>
               </div>
 
