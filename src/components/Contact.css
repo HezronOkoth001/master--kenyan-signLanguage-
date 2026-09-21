@@ -1,28 +1,265 @@
-.contact-section{padding:110px 0;background:var(--cream-200);position:relative;overflow:hidden}
-.contact-container{width:min(92%,var(--container));margin:0 auto}
-.contact-heading{max-width:760px;margin:0 auto 60px;text-align:center}
-.contact-heading span{display:inline-block;margin-bottom:14px;color:var(--gold-500);font-size:12px;font-weight:900;letter-spacing:2px}
-.contact-heading h1{margin:0 0 18px;color:var(--green-900);font-size:clamp(38px,5vw,58px);line-height:1.05;letter-spacing:-2px}
-.contact-heading strong{color:var(--gold-500)}
-.contact-heading p{max-width:620px;margin:0 auto;color:var(--text-medium);font-size:16px;line-height:1.8}
-.contact-content{display:grid;grid-template-columns:.85fr 1.15fr;gap:28px;align-items:stretch}
-.contact-info{padding:42px;border-radius:var(--radius-lg);background:var(--green-900);color:#fff;box-shadow:var(--shadow-md)}
-.contact-info h2{margin:0 0 14px;color:#fff;font-size:30px}
-.contact-info>p{margin:0 0 34px;color:rgba(255,255,255,.68);line-height:1.8}
-.contact-details{display:flex;flex-direction:column;gap:20px}
-.contact-item{display:flex;align-items:center;gap:15px;padding:16px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.04)}
-.contact-icon{width:46px;height:46px;flex:0 0 46px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(217,184,102,.13);font-size:19px}
-.contact-item span{display:block;margin-bottom:4px;color:rgba(255,255,255,.48);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
-.contact-item a,.contact-item p{margin:0;color:#fff;font-size:14px;text-decoration:none;line-height:1.5}
-.contact-item a:hover{color:var(--gold-400)}
-.contact-map{display:inline-flex!important;margin-top:6px;color:var(--gold-400)!important;font-size:12px!important;font-weight:700}
-.contact-form-box{padding:42px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--white);box-shadow:var(--shadow-sm)}
-.contact-form-box h2{margin:0 0 25px;color:var(--green-900);font-size:28px}
-.form-group{margin-bottom:18px}.form-group label{display:block;margin-bottom:8px;color:var(--green-900);font-size:13px;font-weight:800}
-.form-group input,.form-group textarea{width:100%;padding:14px 15px;border:1px solid var(--border);border-radius:10px;background:var(--cream-100);color:var(--text-dark);outline:none;resize:vertical;transition:.25s ease}
-.form-group input:focus,.form-group textarea:focus{border-color:var(--gold-500);box-shadow:0 0 0 3px rgba(217,184,102,.12)}
-.contact-submit{width:100%;min-height:50px;border:0;border-radius:10px;background:var(--green-800);color:#fff;font-weight:800;cursor:pointer;transition:.25s ease}
-.contact-submit:hover{background:var(--green-700);transform:translateY(-2px)}
-.dark-mode .contact-form-box{background:var(--white)}
-@media(max-width:850px){.contact-section{padding:85px 0}.contact-content{grid-template-columns:1fr}.contact-info,.contact-form-box{padding:30px}}
-@media(max-width:600px){.contact-section{padding:70px 0}.contact-heading{text-align:left;margin-bottom:40px}.contact-heading p{margin:0}.contact-info,.contact-form-box{padding:24px}.contact-heading h1{font-size:38px}}
+/* =====================================================
+   KSL CONTACT — MATCHING GLOBAL GREEN / GOLD THEME
+===================================================== */
+
+.contact-section {
+  padding: 120px 0;
+  background: var(--cream-200);
+}
+
+.contact-container {
+  width: min(92%, var(--container));
+  margin: 0 auto;
+}
+
+.contact-heading {
+  max-width: 720px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+
+.contact-heading span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: var(--gold-500);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.contact-heading span::before,
+.contact-heading span::after {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--gold-500);
+}
+
+.contact-heading h1 {
+  margin: 0 0 18px;
+  color: var(--green-900);
+  font-size: clamp(40px, 5vw, 58px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+
+.contact-heading h1 strong {
+  color: var(--gold-500);
+}
+
+.contact-heading p {
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--text-medium);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.contact-info {
+  padding: 42px;
+  border-radius: var(--radius-lg);
+  background: var(--green-900);
+  color: var(--white);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-info h2 {
+  margin-bottom: 12px;
+  color: #fff;
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.contact-info > p {
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.035);
+  transition: var(--transition);
+}
+
+.contact-item:hover {
+  border-color: rgba(217, 184, 102, 0.35);
+  background: rgba(217, 184, 102, 0.06);
+  transform: translateX(3px);
+}
+
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(217, 184, 102, 0.25);
+  border-radius: 12px;
+  background: rgba(217, 184, 102, 0.08);
+  color: var(--gold-400);
+  font-size: 18px;
+}
+
+.contact-item span {
+  display: block;
+  margin-bottom: 3px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.contact-item a,
+.contact-item p {
+  margin: 0;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.contact-item a:hover {
+  color: var(--gold-400);
+}
+
+.contact-map {
+  display: inline-flex !important;
+  margin-top: 5px !important;
+  color: var(--gold-400) !important;
+  font-size: 11px !important;
+  font-weight: 800;
+}
+
+.contact-form-box {
+  padding: 42px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-form-box h2 {
+  margin-bottom: 28px;
+  color: var(--green-900);
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--green-900);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--cream-100);
+  color: var(--text-dark);
+  font-size: 14px;
+  resize: vertical;
+  transition: var(--transition);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--text-light);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--gold-500);
+  box-shadow: 0 0 0 3px rgba(217, 184, 102, 0.12);
+}
+
+.contact-submit {
+  width: 100%;
+  min-height: 50px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--green-800);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  transition: var(--transition);
+}
+
+.contact-submit:hover {
+  background: var(--green-700);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 850px) {
+  .contact-section {
+    padding: 90px 0;
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 75px 0;
+  }
+
+  .contact-heading {
+    margin-bottom: 42px;
+    text-align: left;
+  }
+
+  .contact-heading span::after {
+    display: none;
+  }
+
+  .contact-heading p {
+    margin: 0;
+  }
+
+  .contact-info,
+  .contact-form-box {
+    padding: 26px;
+  }
+
+  .contact-heading h1 {
+    font-size: 40px;
+  }
+}
