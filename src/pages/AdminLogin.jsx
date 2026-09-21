@@ -9,7 +9,6 @@ const AdminLogin = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,11 +21,9 @@ const AdminLogin = () => {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           email,
           password,
@@ -36,47 +33,19 @@ const AdminLogin = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Incorrect email or password."
-        );
+        throw new Error(data.message || "Incorrect email or password.");
       }
 
       // Save successful login
-      localStorage.setItem(
-        "kslAdminLoggedIn",
-        "true"
-      );
-
-      localStorage.setItem(
-        "kslAdminToken",
-         data.token
-      );
-
-      localStorage.setItem(
-        "kslAdminToken",
-         data.token
-      );
-
-      localStorage.setItem(
-        "kslAdmin",
-        JSON.stringify(data.admin)
-      );
+      localStorage.setItem("kslAdminLoggedIn", "true");
+      localStorage.setItem("kslAdminToken", data.token);
+      localStorage.setItem("kslAdmin", JSON.stringify(data.admin));
 
       // Go to admin dashboard
       navigate("/admin/blog");
-
     } catch (error) {
-      console.error(
-        "Login error:",
-        error
-      );
-
-      setError(
-        error.message ||
-          "Unable to login. Please try again."
-      );
-
+      console.error("Login error:", error);
+      setError(error.message || "Unable to login. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -84,11 +53,8 @@ const AdminLogin = () => {
 
   return (
     <div className="admin-login-page">
-
       <div className="admin-login-card">
-
         <div className="admin-login-heading">
-
           <span>ADMIN AREA</span>
 
           <h1>
@@ -99,62 +65,40 @@ const AdminLogin = () => {
           <p>
             Sign in to manage your Kenyan Sign Language blog.
           </p>
-
         </div>
 
         <form onSubmit={handleLogin}>
-
-          {/* EMAIL */}
-
           <div className="admin-form-group">
-
-            <label htmlFor="email">
-              Email
-            </label>
+            <label htmlFor="email">Email</label>
 
             <input
               id="email"
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={(event) =>
-                setEmail(event.target.value)
-              }
+              onChange={(event) => setEmail(event.target.value)}
               required
             />
-
           </div>
 
-          {/* PASSWORD */}
-
           <div className="admin-form-group">
-
-            <label htmlFor="password">
-              Password
-            </label>
+            <label htmlFor="password">Password</label>
 
             <input
               id="password"
               type="password"
               placeholder="Enter your password"
               value={password}
-              onChange={(event) =>
-                setPassword(event.target.value)
-              }
+              onChange={(event) => setPassword(event.target.value)}
               required
             />
-
           </div>
-
-          {/* ERROR */}
 
           {error && (
             <p className="admin-login-error">
               {error}
             </p>
           )}
-
-          {/* LOGIN BUTTON */}
 
           <button
             type="submit"
@@ -163,11 +107,8 @@ const AdminLogin = () => {
           >
             {loading ? "Signing in..." : "Login"}
           </button>
-
         </form>
-
       </div>
-
     </div>
   );
 };
