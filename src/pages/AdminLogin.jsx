@@ -30,9 +30,6 @@ const AdminLogin = () => {
         throw new Error(data.message || "Incorrect email or password.");
       }
 
-      localStorage.setItem("kslAdminLoggedIn", "true");
-      localStorage.setItem("kslAdmin", JSON.stringify(data.admin));
-
       navigate("/admin/blog");
     } catch (error) {
       console.error("Login error:", error);
