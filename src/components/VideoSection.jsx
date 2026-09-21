@@ -47,7 +47,7 @@ function VideoSection() {
               poster="/video-poster.jpg"
             >
               <source
-                src="/WIN_20230830_11_51_47_Pro.mp4"
+                src="/a9b47f3f-a957-4018-ada1-7fcdfeb80db0.mp4"
                 type="video/mp4"
               />
 
