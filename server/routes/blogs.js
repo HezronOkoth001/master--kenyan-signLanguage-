@@ -71,6 +71,47 @@ const upload = multer({
   },
 });
 
+const uploadBlogImages = (req, res, next) => {
+  upload.fields([
+    { name: "cover_image", maxCount: 1 },
+    { name: "article_images", maxCount: 10 },
+  ])(req, res, (error) => {
+    if (!error) {
+      return next();
+    }
+
+    if (error instanceof multer.MulterError) {
+      if (error.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({
+          message: "Each image must be 5MB or smaller.",
+        });
+      }
+
+      if (error.code === "LIMIT_FILE_COUNT") {
+        return res.status(400).json({
+          message: "Too many files were uploaded.",
+        });
+      }
+
+      if (error.code === "LIMIT_UNEXPECTED_FILE") {
+        return res.status(400).json({
+          message: "Only JPG, PNG and WEBP images are allowed.",
+        });
+      }
+
+      return res.status(400).json({
+        message: "Invalid image upload.",
+      });
+    }
+
+    console.error("Image upload error:", error.message);
+
+    return res.status(400).json({
+      message: "Image upload failed.",
+    });
+  });
+};
+
 // ========================================
 // GET ALL BLOG POSTS
 // ========================================
@@ -171,16 +212,7 @@ router.get("/:id", (req, res) => {
 router.post(
   "/",
    authMiddleware,
-  upload.fields([
-    {
-      name: "cover_image",
-      maxCount: 1,
-    },
-    {
-      name: "article_images",
-      maxCount: 10,
-    },
-  ]),
+  uploadBlogImages,
   (req, res) => {
 
     const {
@@ -348,16 +380,7 @@ router.post(
 router.put(
   "/:id",
   authMiddleware,
-  upload.fields([
-    {
-      name: "cover_image",
-      maxCount: 1,
-    },
-    {
-      name: "article_images",
-      maxCount: 10,
-    },
-  ]),
+  uploadBlogImages,
   (req, res) => {
 
     const { id } = req.params;
