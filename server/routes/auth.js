@@ -82,6 +82,32 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.get("/me", (req, res) => {
+  const token = req.cookies?.[COOKIE_NAME];
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Authentication required",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    return res.json({
+      authenticated: true,
+      admin: {
+        id: decoded.id,
+        email: decoded.email,
+      },
+    });
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid or expired session",
+    });
+  }
+});
+
 router.post("/logout", (req, res) => {
   res.clearCookie(COOKIE_NAME, {
     httpOnly: true,
