@@ -27,13 +27,10 @@ function AdminBlog() {
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
-      localStorage.removeItem("kslAdminLoggedIn");
-      localStorage.removeItem("kslAdmin");
+
       navigate("/admin/login");
     }
   };
-
-  const getAuthOptions = () => ({ credentials: "include" });
 
   const getImageUrl = (image) => {
     if (!image) return "";
@@ -55,12 +52,24 @@ function AdminBlog() {
   };
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem("kslAdminLoggedIn");
-    if (loggedIn !== "true") {
-      navigate("/admin/login");
-      return;
-    }
-    loadBlogs();
+    const verifySession = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/me", {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Session expired");
+        }
+
+        await loadBlogs();
+      } catch (error) {
+        console.error("Session verification error:", error);
+        await logoutAndRedirect();
+      }
+    };
+
+    verifySession();
   }, [navigate]);
 
   const handleCoverImageChange = (e) => {
