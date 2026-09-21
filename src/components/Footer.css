@@ -1,4 +1,4 @@
-.site-footer{background:var(--green-900);color:#fff;overflow:hidden}
+.site-footer{background:var(--green-900);color:#fff;overflow:hidden;border-top:1px solid rgba(217,184,102,.12)}
 .footer-container{width:min(92%,var(--container));margin:0 auto;padding:72px 0 58px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:42px}
 .footer-column{display:flex;flex-direction:column}.footer-about h2{margin:0 0 16px;color:#fff;font-size:24px;letter-spacing:-.5px}.footer-about h2::after{content:"";display:block;width:42px;height:3px;margin-top:12px;background:var(--gold-500);border-radius:10px}
 .footer-column h3{margin:0 0 20px;color:#fff;font-size:13px;letter-spacing:1px;text-transform:uppercase}.footer-column p{margin:0 0 12px;color:rgba(255,255,255,.62);font-size:13px;line-height:1.8}.footer-about>p{max-width:350px}
