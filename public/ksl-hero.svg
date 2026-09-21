@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700">
+<rect width="900" height="700" fill="#102a1e"/>
+<circle cx="700" cy="140" r="180" fill="#173b2a"/>
+<circle cx="760" cy="570" r="240" fill="#173b2a"/>
+<text x="70" y="250" fill="#d9b866" font-family="Arial,sans-serif" font-size="90" font-weight="800">KSL</text>
+<text x="70" y="320" fill="#ffffff" font-family="Arial,sans-serif" font-size="34" font-weight="700">Kenyan Sign Language</text>
+<text x="70" y="370" fill="#b9c1ba" font-family="Arial,sans-serif" font-size="22">Learn • Connect • Communicate</text>
+<path d="M610 420c-35-55-20-120 20-150 20-15 45 5 40 30l-8 38 34-70c10-20 38-14 38 9v62l25-48c10-19 38-11 36 11l-7 58 22-30c13-18 40-5 34 17-12 42-35 86-67 112-36 29-91 33-147-39z" fill="#d9b866"/>
+<path d="M630 445c35 28 77 31 111 5" fill="none" stroke="#102a1e" stroke-width="9" stroke-linecap="round"/>
+</svg>
