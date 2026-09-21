@@ -44,7 +44,6 @@ function VideoSection() {
             <video
               controls
               preload="metadata"
-              poster="/video-poster.jpg"
             >
               <source
                 src="/a9b47f3f-a957-4018-ada1-7fcdfeb80db0.mp4"
