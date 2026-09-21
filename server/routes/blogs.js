@@ -12,26 +12,64 @@ const router = express.Router();
 // IMAGE UPLOAD CONFIGURATION
 // ========================================
 
+const ALLOWED_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+]);
+
+const ALLOWED_EXTENSIONS = new Set([
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+]);
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../uploads"));
   },
 
   filename: (req, file, cb) => {
-    const uniqueName =
+    const extension = path.extname(file.originalname).toLowerCase();
+
+    const safeName =
       Date.now() +
       "-" +
-      Math.round(Math.random() * 1e9) +
-      path.extname(file.originalname);
+      Math.random().toString(36).slice(2, 12) +
+      extension;
 
-    cb(null, uniqueName);
+    cb(null, safeName);
   },
 });
 
-const upload = multer({
-  storage: storage,
-});
+const fileFilter = (req, file, cb) => {
+  const extension = path.extname(file.originalname).toLowerCase();
 
+  if (
+    !ALLOWED_MIME_TYPES.has(file.mimetype) ||
+    !ALLOWED_EXTENSIONS.has(extension)
+  ) {
+    return cb(
+      new multer.MulterError("LIMIT_UNEXPECTED_FILE"),
+      false
+    );
+  }
+
+  cb(null, true);
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: MAX_FILE_SIZE,
+    files: 11,
+    fields: 20,
+  },
+});
 
 // ========================================
 // GET ALL BLOG POSTS
