@@ -143,6 +143,22 @@ The backend runs on:
 http://localhost:5000
 ```
 
+## Docker Setup
+
+Docker Compose runs the frontend, backend, and MySQL database together. Copy the environment values you need into a `.env` file at the repository root, then start the stack:
+
+```bash
+docker compose up --build
+```
+
+Open the frontend at `http://localhost`. The API is available at `http://localhost:5000`. MySQL data and uploaded blog images are stored in named Docker volumes. Stop the stack with:
+
+```bash
+docker compose down
+```
+
+To remove the persisted database and uploads as well, run `docker compose down -v`.
+
 ## Admin Access
 
 The project includes an admin dashboard for managing blog content.
