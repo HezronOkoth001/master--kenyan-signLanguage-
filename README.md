@@ -143,9 +143,27 @@ The backend runs on:
 http://localhost:5000
 ```
 
+### Create the default admin
+
+After configuring `server/.env`, run the repeatable admin migration:
+
+```bash
+cd server
+npm run migrate:admin
+```
+
+When running with Docker Compose, run the migration inside the backend container instead:
+
+```bash
+docker compose up -d db backend
+docker compose exec backend npm run migrate:admin
+```
+
+The migration creates the `admins` table and seeds the admin configured by `ADMIN_EMAIL` and `ADMIN_PASSWORD`. The default development credentials are `admin@ksl.local` and `Admin@12345`. Change them in `server/.env` before running the migration in a shared or production environment.
+
 ## Docker Setup
 
-Docker Compose runs the frontend, backend, and MySQL database together. Copy the environment values you need into a `.env` file at the repository root, then start the stack:
+Docker Compose runs the frontend, backend, and MySQL database together. Copy the environment values you need into a `.env` file at the repository root, using the `COMPOSE_*` database variable names so they do not conflict with a local `server/.env`, then start the stack:
 
 ```bash
 docker compose up --build
