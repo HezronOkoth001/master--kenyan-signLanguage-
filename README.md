@@ -159,7 +159,7 @@ docker compose up -d db backend
 docker compose exec backend npm run migrate:admin
 ```
 
-The migration creates the `admins` table and seeds the admin configured by `ADMIN_EMAIL` and `ADMIN_PASSWORD`. The default development credentials are `admin@ksl.local` and `Admin@12345`. Change them in `server/.env` before running the migration in a shared or production environment.
+The migration creates the `admins`, `blogs`, and `blog_images` tables, then seeds the admin configured by `ADMIN_EMAIL` and `ADMIN_PASSWORD`. The default development credentials are `admin@ksl.local` and `Admin@12345`. Change them in `server/.env` before running the migration in a shared or production environment.
 
 ## Docker Setup
 

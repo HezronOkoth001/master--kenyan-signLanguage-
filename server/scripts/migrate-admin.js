@@ -16,6 +16,34 @@ async function migrate() {
 
   try {
     await connection.execute(`
+      CREATE TABLE IF NOT EXISTS blogs (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        author VARCHAR(255) NOT NULL,
+        content LONGTEXT NOT NULL,
+        cover_image VARCHAR(500) DEFAULT NULL,
+        published_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX blogs_published_at_index (published_at)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS blog_images (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        blog_id INT UNSIGNED NOT NULL,
+        image_path VARCHAR(500) NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX blog_images_blog_id_index (blog_id),
+        CONSTRAINT blog_images_blog_id_foreign
+          FOREIGN KEY (blog_id) REFERENCES blogs (id)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await connection.execute(`
       CREATE TABLE IF NOT EXISTS admins (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         email VARCHAR(255) NOT NULL,
