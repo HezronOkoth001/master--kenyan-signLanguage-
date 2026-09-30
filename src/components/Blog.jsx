@@ -13,7 +13,7 @@ function Blog() {
     const fetchArticles = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/api/blog`
+          API_URL
         );
 
         if (!response.ok) {
