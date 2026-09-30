@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminBlog.css";
+import { BLOGS_API_URL, getServerUrl, AUTH_API_URL } from "../config/api";
 
-const SERVER_URL = import.meta.env.VITE_API_URL;
-const API_URL = `${SERVER_URL}/api/blogs`;
+const SERVER_URL = getServerUrl();
+const API_URL = BLOGS_API_URL;
 
 
 function AdminBlog() {
