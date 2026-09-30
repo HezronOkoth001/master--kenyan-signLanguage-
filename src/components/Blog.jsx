@@ -16,7 +16,15 @@ function Blog() {
           `${API_URL}/api/blog`
         );
 
+        if (!response.ok) {
+          throw new Error("Unable to load articles.");
+        }
+
         const data = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid blog response.");
+        }
 
         setArticles(data.slice(0, 3));
       } catch (error) {
@@ -40,7 +48,7 @@ function Blog() {
       return image;
     }
 
-    return `${API_URL}${image}`;
+    return getServerUrl(image);
   };
 
   return (
