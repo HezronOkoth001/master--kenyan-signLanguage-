@@ -1,10 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700">
-<rect width="900" height="700" fill="#102a1e"/>
-<circle cx="700" cy="140" r="180" fill="#173b2a"/>
-<circle cx="760" cy="570" r="240" fill="#173b2a"/>
-<text x="70" y="250" fill="#d9b866" font-family="Arial,sans-serif" font-size="90" font-weight="800">KSL</text>
-<text x="70" y="320" fill="#ffffff" font-family="Arial,sans-serif" font-size="34" font-weight="700">Kenyan Sign Language</text>
-<text x="70" y="370" fill="#b9c1ba" font-family="Arial,sans-serif" font-size="22">Learn • Connect • Communicate</text>
-<path d="M610 420c-35-55-20-120 20-150 20-15 45 5 40 30l-8 38 34-70c10-20 38-14 38 9v62l25-48c10-19 38-11 36 11l-7 58 22-30c13-18 40-5 34 17-12 42-35 86-67 112-36 29-91 33-147-39z" fill="#d9b866"/>
-<path d="M630 445c35 28 77 31 111 5" fill="none" stroke="#102a1e" stroke-width="9" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" role="img" aria-labelledby="title desc">
+  <title id="title">Kenyan Sign Language</title>
+  <desc id="desc">KSL illustration with a signing hand and Kenyan Sign Language branding</desc>
+  <rect width="900" height="1100" fill="#102a1e"/>
+  <circle cx="760" cy="170" r="260" fill="#173b2a"/>
+  <circle cx="120" cy="980" r="360" fill="#173b2a"/>
+  <path d="M610 790c-55-85-30-190 25-235 29-23 64 7 57 43l-11 59 51-108c15-30 57-21 57 13v96l38-75c15-29 57-17 54 17l-11 89 34-47c20-28 61-8 51 27-18 64-54 132-105 172-56 44-141 50-230-51z" fill="#d9b866"/>
+  <path d="M640 835c52 42 113 47 163 8" fill="none" stroke="#102a1e" stroke-width="12" stroke-linecap="round"/>
+  <text x="70" y="175" fill="#d9b866" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="800" letter-spacing="3">KSL</text>
+  <text x="70" y="230" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">Kenyan Sign Language</text>
+  <text x="70" y="272" fill="#b9c1ba" font-family="Arial, Helvetica, sans-serif" font-size="20">Learn • Connect • Communicate</text>
+  <line x1="70" y1="305" x2="330" y2="305" stroke="#d9b866" stroke-width="4" stroke-linecap="round"/>
+  <text x="70" y="1000" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="600">Learn KSL with confidence</text>
 </svg>
