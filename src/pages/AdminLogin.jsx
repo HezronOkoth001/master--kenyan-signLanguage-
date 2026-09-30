@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
+import { AUTH_API_URL } from "../config/api";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/api/auth/login`;
+const API_URL = `${AUTH_API_URL}/login`;
 
 const AdminLogin = () => {
   const navigate = useNavigate();
