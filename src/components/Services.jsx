@@ -12,7 +12,7 @@ function Services() {
       price: "KSh 1,500",
       button: "Book Training",
       image:
-        "https://images.squarespace-cdn.com/content/v1/5d0e26531c3e4d00019decc5/1719500408514-L7Z8YD0OSDVFOYWSTODS/UNICEF%2BGIGA%2BCONNECTIVITY%2BMASENO-28_small.jpg",
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=85",
     },
     {
       number: "02",
@@ -22,7 +22,7 @@ function Services() {
       price: "KSh 2,000",
       button: "Book Session",
       image:
-        "https://i0.wp.com/www.alive-reli.org/wp-content/uploads/2025/04/We-Speak-the-Language-of-Inclusion-The-Power-of-Sign-Language-in-College-By-Erika-Mungai.webp?fit=900%2C600&ssl=1",
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85",
     },
     {
       number: "03",
@@ -33,7 +33,7 @@ function Services() {
       button: "Book Free Consultation",
       featured: true,
       image:
-        "https://publish.eastleighvoice.co.ke/mugera_lock/uploads/2024/01/Sign-3.jpg",
+        "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=85",
     },
   ];
 
