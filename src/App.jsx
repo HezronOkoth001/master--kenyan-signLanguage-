@@ -130,7 +130,7 @@ function Home({ darkMode, setDarkMode }) {
 
         <Hero />
 
-        <VideoSection />
+        <section className="video-placeholder" aria-label="Video coming soon"></section>
 
         <About />
 
