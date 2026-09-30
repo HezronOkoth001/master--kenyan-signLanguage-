@@ -5040,3 +5040,61 @@ img {
     animation: none;
   }
 }
+
+
+/* Search-focused KSL guide pages */
+.seo-page {
+  min-height: 100vh;
+  background: var(--cream-100);
+  color: var(--green-900);
+  padding: 120px 20px 80px;
+}
+.seo-page-content {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+.seo-page h1 {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  max-width: 850px;
+  margin: 18px 0;
+}
+.seo-page-intro {
+  max-width: 780px;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--green-700);
+}
+.seo-topic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 50px;
+}
+.seo-topic-card {
+  background: white;
+  border: 1px solid rgba(32,82,56,.12);
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 14px 40px rgba(16,42,30,.07);
+}
+.seo-topic-card h2 { margin-top: 0; }
+.seo-topic-card p { line-height: 1.75; color: var(--green-700); }
+.seo-page-cta {
+  margin-top: 50px;
+  padding: 38px;
+  border-radius: 26px;
+  background: var(--green-900);
+  color: white;
+}
+.seo-page-cta p { opacity: .85; line-height: 1.7; }
+.seo-page-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.seo-page-links a { text-decoration: none; }
+@media (max-width: 700px) {
+  .seo-page { padding: 100px 16px 60px; }
+  .seo-topic-grid { grid-template-columns: 1fr; }
+  .seo-topic-card { padding: 24px; }
+}
+.dark-mode .seo-page { background: #0d1712; color: #f5f2e9; }
+.dark-mode .seo-page-intro, .dark-mode .seo-topic-card p { color: #c9d5cd; }
+.dark-mode .seo-topic-card { background: #13231a; border-color: rgba(229,202,130,.12); }
