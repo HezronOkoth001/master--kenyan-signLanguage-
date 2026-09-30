@@ -3,9 +3,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import "./BlogArticle.css";
+import { BLOGS_API_URL, getServerUrl } from "../config/api";
 
-const SERVER_URL = import.meta.env.VITE_API_URL || "https://ksl-database-ftb1ti32h-netwe.vercel.app";
-const API_URL = `${SERVER_URL}/api/blogs`;
+const SERVER_URL = getServerUrl();
+const API_URL = BLOGS_API_URL;
 
 function BlogArticle() {
   const { id } = useParams();
