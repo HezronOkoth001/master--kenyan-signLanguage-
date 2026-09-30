@@ -4053,3 +4053,255 @@ img {
     padding: 23px;
   }
 }
+
+/* =====================================================
+   MOTION & MICRO-INTERACTIONS
+===================================================== */
+
+@keyframes kslFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kslFadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes kslFadeLeft {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes kslFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes kslPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(217, 184, 102, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(217, 184, 102, 0.10);
+  }
+}
+
+@keyframes kslShimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* Hero entrance */
+.hero-label {
+  animation: kslFadeRight 0.7s ease both;
+}
+
+.hero-title {
+  animation: kslFadeUp 0.8s ease 0.12s both;
+}
+
+.hero-description {
+  animation: kslFadeUp 0.8s ease 0.22s both;
+}
+
+.hero-buttons {
+  animation: kslFadeUp 0.8s ease 0.32s both;
+}
+
+.hero-visual {
+  animation: kslFadeLeft 0.9s ease 0.18s both;
+}
+
+.hero-card {
+  animation: kslFloat 5s ease-in-out 1s infinite;
+}
+
+/* Navigation */
+.navbar-logo {
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: translateY(-2px);
+}
+
+.navbar-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 100%;
+  height: 2px;
+  background: var(--gold-500);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.navbar-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Buttons */
+.btn,
+.navbar-button,
+.class-button,
+.blog-view-all,
+.blog-read-more,
+.contact-submit {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after,
+.navbar-button::after,
+.class-button::after,
+.blog-view-all::after,
+.blog-read-more::after,
+.contact-submit::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: left 0.55s ease;
+  pointer-events: none;
+}
+
+.btn:hover::after,
+.navbar-button:hover::after,
+.class-button:hover::after,
+.blog-view-all:hover::after,
+.blog-read-more:hover::after,
+.contact-submit:hover::after {
+  left: 130%;
+}
+
+/* Cards */
+.service-card,
+.class-card,
+.blog-card,
+.about-feature,
+.contact-item {
+  animation: kslFadeUp 0.75s ease both;
+}
+
+.services-grid .service-card:nth-child(2),
+.classes-grid .class-card:nth-child(2),
+.blog-grid .blog-card:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.services-grid .service-card:nth-child(3),
+.classes-grid .class-card:nth-child(3),
+.blog-grid .blog-card:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+.card:hover,
+.class-card:hover,
+.blog-card:hover {
+  transform: translateY(-9px) scale(1.01);
+}
+
+/* Images */
+.blog-image img,
+.hero-card img {
+  transition: transform 0.6s ease;
+}
+
+.blog-card:hover .blog-image img {
+  transform: scale(1.06);
+}
+
+/* Class arrow */
+.class-button span,
+.blog-read-more span,
+.blog-view-all span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.class-button:hover span,
+.blog-read-more:hover span,
+.blog-view-all:hover span {
+  transform: translateX(6px);
+}
+
+/* Contact icons */
+.contact-icon {
+  transition: transform 0.35s ease;
+}
+
+.contact-item:hover .contact-icon {
+  transform: translateY(-4px) rotate(-5deg) scale(1.08);
+}
+
+/* Featured/free service */
+.service-featured {
+  animation: kslFadeUp 0.75s ease 0.24s both;
+}
+
+.service-badge {
+  animation: kslPulse 2.4s ease-in-out infinite;
+}
+
+/* Form focus */
+.form-group input,
+.form-group textarea {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  transform: translateY(-2px);
+}
+
+/* Respect accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
