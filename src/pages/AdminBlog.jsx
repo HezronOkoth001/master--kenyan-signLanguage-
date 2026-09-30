@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminBlog.css";
-import { BLOGS_API_URL, getServerUrl, AUTH_API_URL } from "../config/api";
+import { BLOGS_API_URL, getServerUrl } from "../config/api";
 
 const SERVER_URL = getServerUrl();
 const API_URL = BLOGS_API_URL;
