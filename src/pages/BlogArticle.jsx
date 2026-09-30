@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 
 import "./BlogArticle.css";
 
-const SERVER_URL = import.meta.env.VITE_API_URL;
+const SERVER_URL = import.meta.env.VITE_API_URL || "https://ksl-database-ftb1ti32h-netwe.vercel.app";
 const API_URL = `${SERVER_URL}/api/blogs`;
 
 function BlogArticle() {
