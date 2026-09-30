@@ -237,6 +237,22 @@ function App() {
         />
 
 
+        {/* SEARCH-FOCUSED KSL GUIDES */}
+        <Route
+          path="/how-to-learn-kenyan-sign-language"
+          element={<KSLGuide type="learn" />}
+        />
+
+        <Route
+          path="/ksl-classes-kenya"
+          element={<KSLGuide type="classes" />}
+        />
+
+        <Route
+          path="/kenyan-sign-language-basics"
+          element={<KSLGuide type="basics" />}
+        />
+
         {/* PUBLIC BLOG */}
         <Route
           path="/blog"
