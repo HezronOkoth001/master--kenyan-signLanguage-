@@ -8,7 +8,7 @@ function Classes() {
         "Learn the basic signs, greetings, numbers, and everyday expressions you need to start communicating in Kenyan Sign Language.",
       topics: ["Basic signs", "Greetings", "Numbers", "Everyday communication"],
       image:
-        "https://assets.globalpartnership.org/s3fs-public/styles/standard_blog_banner/public/ndcs_36283697306_0.jpg?VersionId=8vuW_ftrRkCWf.jvSCxJbAPu_C6KQTXt&itok=aNpkTH8w",
+        "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1000&q=85",
     },
     {
       number: "02",
@@ -18,7 +18,7 @@ function Classes() {
         "Improve your vocabulary and learn how to communicate more naturally in everyday conversations.",
       topics: ["Expanded vocabulary", "Sentence structure", "Daily conversations", "Practical communication"],
       image:
-        "https://images.squarespace-cdn.com/content/v1/5d0e26531c3e4d00019decc5/1719500405191-A8DP1JHIA5ZCX0U22XZS/UNICEF%2BGIGA%2BCONNECTIVITY%2BMASENO-13_small.jpg",
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=85",
     },
     {
       number: "03",
@@ -28,7 +28,7 @@ function Classes() {
         "Get personalized guidance based on your goals, experience, and preferred learning pace.",
       topics: ["One-on-one sessions", "Personalized lessons", "Flexible learning", "Individual support"],
       image:
-        "https://i0.wp.com/www.alive-reli.org/wp-content/uploads/2025/04/We-Speak-the-Language-of-Inclusion-The-Power-of-Sign-Language-in-College-By-Erika-Mungai.webp?fit=900%2C600&ssl=1",
+        "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1000&q=85",
     },
   ];
 
