@@ -15,7 +15,9 @@ function AdminBlog() {
   const [content, setContent] = useState("");
   const [coverImageFile, setCoverImageFile] = useState(null);
   const [coverImagePreview, setCoverImagePreview] = useState("");
+  const [existingCoverImageUrl, setExistingCoverImageUrl] = useState("");
   const [contentImages, setContentImages] = useState([]);
+  const [existingArticleImageUrls, setExistingArticleImageUrls] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -83,8 +85,8 @@ function AdminBlog() {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setErrorMessage("Cover image must be 5MB or smaller.");
+    if (file.size > 4 * 1024 * 1024) {
+      setErrorMessage("Cover image must be 4MB or smaller.");
       return;
     }
 
@@ -97,11 +99,11 @@ function AdminBlog() {
     const files = Array.from(e.target.files);
     const validImages = files.filter((file) =>
       ["image/jpeg", "image/png", "image/webp"].includes(file.type) &&
-      file.size <= 5 * 1024 * 1024
+      file.size <= 4 * 1024 * 1024
     );
 
     if (validImages.length !== files.length) {
-      setErrorMessage("Only JPG, PNG and WEBP images up to 5MB each are allowed.");
+      setErrorMessage("Only JPG, PNG and WEBP images up to 4MB each are allowed.");
       return;
     }
 
@@ -126,7 +128,9 @@ function AdminBlog() {
     setContent("");
     setCoverImageFile(null);
     setCoverImagePreview("");
+    setExistingCoverImageUrl("");
     setContentImages([]);
+    setExistingArticleImageUrls([]);
     setEditingId(null);
     setErrorMessage("");
 
@@ -137,18 +141,57 @@ function AdminBlog() {
     if (articleInput) articleInput.value = "";
   };
 
-  const submitBlog = async (method, url) => {
+  const uploadImage = async (file) => {
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("author", author);
-    formData.append("content", content);
-    if (coverImageFile) formData.append("cover_image", coverImageFile);
-    contentImages.forEach((file) => formData.append("article_images", file));
+    formData.append("file", file);
+
+    const response = await fetch(`${API_URL}/upload-image`, {
+      method: "POST",
+      credentials: "include",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (response.status === 401) {
+      await logoutAndRedirect();
+      throw new Error("Authentication required.");
+    }
+
+    if (!response.ok) {
+      throw new Error(data.message || "Image upload failed.");
+    }
+
+    return data.url;
+  };
+
+  const submitBlog = async (method, url) => {
+    const uploadedCoverImage = coverImageFile
+      ? await uploadImage(coverImageFile)
+      : existingCoverImageUrl || null;
+
+    const uploadedArticleImages = contentImages.length
+      ? await Promise.all(contentImages.map((file) => uploadImage(file)))
+      : [];
+
+    const articleImages = [
+      ...existingArticleImageUrls,
+      ...uploadedArticleImages,
+    ].slice(0, 10);
 
     const response = await fetch(url, {
       method,
       credentials: "include",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        author,
+        content,
+        cover_image: uploadedCoverImage,
+        article_images: articleImages,
+      }),
     });
 
     if (response.status === 401) {
@@ -157,7 +200,10 @@ function AdminBlog() {
     }
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || "Failed to save article");
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to save article");
+    }
 
     await loadBlogs();
     resetForm();
@@ -186,17 +232,46 @@ function AdminBlog() {
     }
   };
 
-  const handleEdit = (blog) => {
+  const handleEdit = async (blog) => {
     if (!blog || blog.id === null || blog.id === undefined) return;
-    setEditingId(blog.id);
-    setTitle(blog.title || "");
-    setAuthor(blog.author || "");
-    setContent(blog.content || "");
-    setCoverImageFile(null);
-    setCoverImagePreview(blog.cover_image ? getImageUrl(blog.cover_image) : "");
-    setContentImages([]);
-    setErrorMessage("");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    try {
+      setErrorMessage("");
+      const response = await fetch(`${API_URL}/${blog.id}`);
+
+      if (!response.ok) {
+        throw new Error("Unable to load the article.");
+      }
+
+      const fullBlog = await response.json();
+
+      setEditingId(fullBlog.id);
+      setTitle(fullBlog.title || "");
+      setAuthor(fullBlog.author || "");
+      setContent(fullBlog.content || "");
+      setCoverImageFile(null);
+
+      const coverUrl = fullBlog.cover_image
+        ? getImageUrl(fullBlog.cover_image)
+        : "";
+
+      setExistingCoverImageUrl(coverUrl);
+      setCoverImagePreview(coverUrl);
+
+      setContentImages([]);
+      setExistingArticleImageUrls(
+        Array.isArray(fullBlog.article_images)
+          ? fullBlog.article_images
+              .map((image) => image.image_path)
+              .filter(Boolean)
+          : []
+      );
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      console.error("Edit blog error:", error);
+      setErrorMessage(error.message);
+    }
   };
 
   const handleDelete = async (id) => {
