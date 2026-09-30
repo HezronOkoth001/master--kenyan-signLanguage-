@@ -1,7 +1,12 @@
 const DEFAULT_API_BASE_URL = "https://ksl-database.vercel.app";
 
+const configuredApiBaseUrl = import.meta.env.VITE_API_URL;
+
 const resolvedApiBaseUrl = (
-  import.meta.env.VITE_API_URL || DEFAULT_API_BASE_URL
+  configuredApiBaseUrl &&
+  !configuredApiBaseUrl.includes("ksl-database-ftb1ti32h-netwe.vercel.app")
+    ? configuredApiBaseUrl
+    : DEFAULT_API_BASE_URL
 ).replace(/\/+$/, "");
 
 export const API_BASE_URL = resolvedApiBaseUrl;
