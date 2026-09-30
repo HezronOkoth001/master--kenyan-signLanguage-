@@ -170,7 +170,6 @@ function App() {
   =================================================== */
 
   useEffect(() => {
-
     document.documentElement.classList.toggle(
       "dark-mode",
       darkMode
@@ -182,6 +181,42 @@ function App() {
     );
 
   }, [darkMode]);
+
+  /* Scroll-reveal motion inspired by modern social/app interfaces */
+  useEffect(() => {
+    document.documentElement.classList.add("motion-enabled");
+
+    const targets = document.querySelectorAll(
+      "main > section, .service-card, .class-card, .blog-card, .about-feature, .contact-item"
+    );
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((element) => element.classList.add("motion-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("motion-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -60px 0px",
+      }
+    );
+
+    targets.forEach((element) => observer.observe(element));
+
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("motion-enabled");
+    };
+  }, []);
 
 
   return (
