@@ -25,5 +25,12 @@ export const getServerUrl = (path = "") => {
     return path;
   }
 
+  // Existing database records use the old /uploads/ path.
+  // Those legacy files live in the frontend repository under server/uploads.
+  if (path.startsWith("/uploads/")) {
+    const filename = path.slice("/uploads/".length);
+    return `https://raw.githubusercontent.com/HezronOkoth001/master--kenyan-signLanguage-/main/server/uploads/${encodeURIComponent(filename)}`;
+  }
+
   return `${resolvedApiBaseUrl}${path.startsWith("/") ? path : `/${path}`}`;
 };
