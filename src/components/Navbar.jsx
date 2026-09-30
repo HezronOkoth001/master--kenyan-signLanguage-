@@ -11,10 +11,17 @@ function Navbar({ darkMode, setDarkMode }) {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-
-        {/* Logo */}
-        <Link to="/" className="navbar-logo" onClick={closeMenu}>
-          <span className="logo-mark">KSL</span>
+        <Link
+          to="/"
+          className="navbar-logo"
+          onClick={closeMenu}
+          aria-label="Master Kenyan Sign Language home"
+        >
+          <img
+            src="/ksl-logo.svg"
+            alt="KSL - Master Kenyan Sign Language"
+            className="logo-image"
+          />
 
           <span className="logo-text">
             Master Kenyan
@@ -22,60 +29,29 @@ function Navbar({ darkMode, setDarkMode }) {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         <div className={`navbar-links ${menuOpen ? "active" : ""}`}>
-          <a href="/#home" onClick={closeMenu}>
-            Home
-          </a>
-
-          <a href="/#about" onClick={closeMenu}>
-            About
-          </a>
-
-          <a href="/#services" onClick={closeMenu}>
-            Services
-          </a>
-
-          <a href="/#classes" onClick={closeMenu}>
-            Classes
-          </a>
-
-          <Link to="/blog" onClick={closeMenu}>
-            Blog
-          </Link>
-
-          <a href="/#contact" onClick={closeMenu}>
-            Contact
-          </a>
+          <a href="/#home" onClick={closeMenu}>Home</a>
+          <a href="/#about" onClick={closeMenu}>About</a>
+          <a href="/#services" onClick={closeMenu}>Services</a>
+          <a href="/#classes" onClick={closeMenu}>Classes</a>
+          <Link to="/blog" onClick={closeMenu}>Blog</Link>
+          <a href="/#contact" onClick={closeMenu}>Contact</a>
         </div>
 
-        {/* Actions */}
         <div className="navbar-actions">
-
-          {/* Dark Mode */}
           <button
             className="theme-toggle"
             onClick={() => setDarkMode(!darkMode)}
-            aria-label={
-              darkMode
-                ? "Switch to light mode"
-                : "Switch to dark mode"
-            }
-            title={
-              darkMode
-                ? "Switch to light mode"
-                : "Switch to dark mode"
-            }
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? "☀️" : "🌙"}
           </button>
 
-          {/* Book Button */}
           <a href="/#services" className="navbar-button">
             Book a Class
           </a>
 
-          {/* Mobile Menu */}
           <button
             className="menu-toggle"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -83,7 +59,6 @@ function Navbar({ darkMode, setDarkMode }) {
           >
             {menuOpen ? "✕" : "☰"}
           </button>
-
         </div>
       </div>
     </nav>
