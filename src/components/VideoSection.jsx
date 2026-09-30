@@ -48,10 +48,10 @@ function VideoSection() {
               playsInline
               controls
               preload="metadata"
-              poster="/WIN_20230830_11_51_47_Pro.jpg"
+              
             >
               <source
-                src="/public/WIN_20230830_11_51_47_Pro.mp4"
+                src="/WIN_20260616_10_09_44_Pro.mp4"
                 type="video/mp4"
               />
 
