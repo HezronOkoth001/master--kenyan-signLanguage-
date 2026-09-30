@@ -96,10 +96,18 @@ function Home({ darkMode, setDarkMode }) {
             description:
               "Learn Kenyan Sign Language through simple, practical and accessible KSL lessons, private sessions and consultations.",
             url: window.location.origin,
-            sameAs: [],
+            sameAs: [
+              "https://github.com/HezronOkoth001/master--kenyan-signLanguage-",
+              "https://master-kenyan-sign-language-x4v8.vercel.app/"
+            ],
+            areaServed: {
+              "@type": "Country",
+              name: "Kenya",
+            },
             knowsAbout: [
               "Kenyan Sign Language",
               "KSL Education",
+              "KSL Classes in Kenya",
               "Sign Language Learning",
               "Deaf Community Awareness",
             ],
