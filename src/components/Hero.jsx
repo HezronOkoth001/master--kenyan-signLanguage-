@@ -36,15 +36,15 @@ function Hero() {
           <div className="hero-trust-row">
             <span>🤟 Practical lessons</span>
             <span>•</span>
-            <span>🇰🇪 Made for Kenya</span>
+            <span>🌍 Open to everyone</span>
           </div>
         </div>
 
         <div className="hero-visual">
           <div className="hero-main-card">
             <img
-              src="https://assets.globalpartnership.org/s3fs-public/styles/standard_blog_banner/public/ndcs_36283697306_0.jpg?VersionId=8vuW_ftrRkCWf.jvSCxJbAPu_C6KQTXt&itok=aNpkTH8w"
-              alt="Students learning sign language in a Kenyan classroom"
+              src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1200&q=85"
+              alt="Diverse international students learning together"
               className="hero-photo"
               loading="eager"
             />
