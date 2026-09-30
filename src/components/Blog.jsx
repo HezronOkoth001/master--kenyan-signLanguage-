@@ -127,7 +127,7 @@ function Blog() {
                       <img
                         src={image}
                         alt={article.title}
-                      />
+                      onError={(event) => { event.currentTarget.src = "/ksl-hero.svg"; }} />
                     ) : (
                       <div className="blog-image-placeholder">
                         <span>KSL</span>
