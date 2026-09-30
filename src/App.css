@@ -5098,3 +5098,14 @@ img {
 .dark-mode .seo-page { background: #0d1712; color: #f5f2e9; }
 .dark-mode .seo-page-intro, .dark-mode .seo-topic-card p { color: #c9d5cd; }
 .dark-mode .seo-topic-card { background: #13231a; border-color: rgba(229,202,130,.12); }
+
+
+/* Homepage video placeholder - kept black until a new video is ready */
+.video-placeholder {
+  width: 100%;
+  min-height: 420px;
+  background: #000;
+}
+@media (max-width: 768px) {
+  .video-placeholder { min-height: 280px; }
+}
