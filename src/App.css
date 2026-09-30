@@ -4938,3 +4938,105 @@ img {
     transition: none;
   }
 }
+
+
+/* =====================================================
+   BLOG NAVIGATION HIGHLIGHT
+   Make the Blog page immediately visible in the navbar
+===================================================== */
+
+.navbar-links .blog-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 7px 13px;
+  border: 1px solid rgba(217, 184, 102, 0.7);
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(217, 184, 102, 0.22), rgba(217, 184, 102, 0.08));
+  color: var(--green-900);
+  box-shadow: 0 5px 18px rgba(217, 184, 102, 0.16);
+  font-weight: 800;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar-links .blog-nav-link::after {
+  display: none;
+}
+
+.navbar-links .blog-nav-link:hover {
+  color: var(--green-900);
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--gold-400), var(--gold-500));
+  border-color: var(--gold-400);
+  box-shadow: 0 9px 25px rgba(217, 184, 102, 0.28);
+}
+
+.blog-nav-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  color: var(--green-900);
+  font-size: 10px;
+  line-height: 1;
+  animation: blogNavGlow 2.2s ease-in-out infinite;
+}
+
+.blog-nav-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 17px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--green-800);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  line-height: 1;
+}
+
+@keyframes blogNavGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 184, 102, 0.15); }
+  50% { transform: scale(1.08); box-shadow: 0 0 0 6px rgba(217, 184, 102, 0.08); }
+}
+
+.dark-mode .navbar-links .blog-nav-link {
+  color: #102a1e;
+  background: linear-gradient(135deg, rgba(229, 202, 130, 0.98), rgba(217, 184, 102, 0.9));
+  border-color: var(--gold-400);
+  box-shadow: 0 6px 22px rgba(217, 184, 102, 0.2);
+}
+
+.dark-mode .navbar-links .blog-nav-link:hover {
+  color: #102a1e;
+  background: var(--gold-400);
+}
+
+.dark-mode .blog-nav-badge {
+  background: #102a1e;
+  color: var(--gold-400);
+}
+
+@media (max-width: 800px) {
+  .navbar-links .blog-nav-link {
+    width: 100%;
+    justify-content: flex-start;
+    min-height: 44px;
+    padding: 9px 13px;
+  }
+
+  .blog-nav-badge {
+    margin-left: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-nav-icon {
+    animation: none;
+  }
+}
