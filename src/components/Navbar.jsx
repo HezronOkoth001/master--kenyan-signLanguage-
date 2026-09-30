@@ -35,7 +35,18 @@ function Navbar({ darkMode, setDarkMode }) {
           <a href="/#about" onClick={closeMenu}>About</a>
           <a href="/#services" onClick={closeMenu}>Services</a>
           <a href="/#classes" onClick={closeMenu}>Classes</a>
-          <Link to="/blog" onClick={closeMenu}>Blog</Link>
+
+          <Link
+            to="/blog"
+            className="blog-nav-link"
+            onClick={closeMenu}
+            aria-label="Visit our KSL blog"
+          >
+            <span className="blog-nav-icon">✦</span>
+            <span>Blog</span>
+            <span className="blog-nav-badge">NEW</span>
+          </Link>
+
           <a href="/#contact" onClick={closeMenu}>Contact</a>
         </div>
 
