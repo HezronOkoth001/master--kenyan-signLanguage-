@@ -21,6 +21,7 @@ function Navbar({ darkMode, setDarkMode }) {
             src="/ksl-logo.svg"
             alt="KSL - Master Kenyan Sign Language"
             className="logo-image"
+            style={{ width: "48px", height: "48px", flexShrink: 0, objectFit: "contain", borderRadius: "12px" }}
           />
 
           <span className="logo-text">
