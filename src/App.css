@@ -4305,3 +4305,133 @@ img {
     scroll-behavior: auto !important;
   }
 }
+
+/* =====================================================
+   SOCIAL-STYLE SCROLL MOTION
+   Smooth, playful and layered like modern app landing pages
+===================================================== */
+
+.motion-enabled main > section,
+.motion-enabled .service-card,
+.motion-enabled .class-card,
+.motion-enabled .blog-card,
+.motion-enabled .about-feature,
+.motion-enabled .contact-item {
+  opacity: 0;
+  transform: translateY(42px) scale(0.985);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-enabled main > section.motion-visible,
+.motion-enabled .service-card.motion-visible,
+.motion-enabled .class-card.motion-visible,
+.motion-enabled .blog-card.motion-visible,
+.motion-enabled .about-feature.motion-visible,
+.motion-enabled .contact-item.motion-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Layered card entrance */
+.motion-enabled .services-grid .service-card:nth-child(2),
+.motion-enabled .classes-grid .class-card:nth-child(2),
+.motion-enabled .blog-grid .blog-card:nth-child(2) {
+  transition-delay: 0.10s;
+}
+
+.motion-enabled .services-grid .service-card:nth-child(3),
+.motion-enabled .classes-grid .class-card:nth-child(3),
+.motion-enabled .blog-grid .blog-card:nth-child(3) {
+  transition-delay: 0.20s;
+}
+
+/* Gentle section movement */
+.motion-enabled .about-heading,
+.motion-enabled .classes-header,
+.motion-enabled .blog-header,
+.motion-enabled .contact-heading {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-enabled main > section.motion-visible .about-heading,
+.motion-enabled main > section.motion-visible .classes-header,
+.motion-enabled main > section.motion-visible .blog-header,
+.motion-enabled main > section.motion-visible .contact-heading {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Make the hero feel alive */
+.hero-card {
+  will-change: transform;
+}
+
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.08) 48%,
+    transparent 60%
+  );
+  transform: translateX(-55%) rotate(8deg);
+  animation: kslShimmer 7s ease-in-out 2s infinite;
+  pointer-events: none;
+}
+
+.hero-card:hover {
+  animation-play-state: paused;
+  transform: translateY(-8px) rotate(-1deg) scale(1.015);
+}
+
+/* More lively interactive cards */
+.service-card,
+.class-card,
+.blog-card {
+  will-change: transform;
+}
+
+.service-card:hover,
+.class-card:hover,
+.blog-card:hover {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+/* Mobile: keep motion lighter */
+@media (max-width: 700px) {
+  .motion-enabled main > section,
+  .motion-enabled .service-card,
+  .motion-enabled .class-card,
+  .motion-enabled .blog-card,
+  .motion-enabled .about-feature,
+  .motion-enabled .contact-item {
+    transform: translateY(24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-enabled main > section,
+  .motion-enabled .service-card,
+  .motion-enabled .class-card,
+  .motion-enabled .blog-card,
+  .motion-enabled .about-feature,
+  .motion-enabled .contact-item,
+  .motion-enabled .about-heading,
+  .motion-enabled .classes-header,
+  .motion-enabled .blog-header,
+  .motion-enabled .contact-heading {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
