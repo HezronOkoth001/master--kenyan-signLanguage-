@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">KSL logo</title>
+  <desc id="desc">Master Kenyan Sign Language logo</desc>
+  <rect x="4" y="4" width="152" height="152" rx="34" fill="#102a1e"/>
+  <rect x="10" y="10" width="140" height="140" rx="29" fill="none" stroke="#d9b866" stroke-width="5"/>
+  <text x="80" y="101" text-anchor="middle" fill="#d9b866" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="800" letter-spacing="2">KSL</text>
+  <path d="M42 119h76" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+</svg>
