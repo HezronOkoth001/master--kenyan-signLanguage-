@@ -378,7 +378,7 @@ function AdminBlog() {
                 <div className="upload-heading"><div><h3>Article Images</h3><p>Add images inside your article</p></div><span className="optional">Optional</span></div>
                 <label htmlFor="articleImages" className="small-upload-area"><div className="upload-icon small">+</div><strong>Add article images</strong><span>You can select multiple images</span></label>
                 <input id="articleImages" type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleContentImagesChange} hidden />
-                {contentImages.length > 0 && <div className="image-preview-grid">{contentImages.map((file, index) => <div className="preview-item" key={`${file.name}-${index}`}><img src={URL.createObjectURL(file)} alt={`Article ${index + 1}`} /><button type="button" onClick={() => removeContentImage(index)}>×</button></div>)}</div>}
+                {contentImages.length > 0 && <div className="image-preview-grid">{contentImages.map((file, index) => <div className="preview-item" key={`${file.name}-${index}`}><img src={URL.createObjectURL(file)} alt={`Article ${index + 1}`} onError={(event) => { event.currentTarget.src = "/ksl-hero.svg"; }} /><button type="button" onClick={() => removeContentImage(index)}>×</button></div>)}</div>}
               </div>
 
               <div className="form-actions">
@@ -395,7 +395,7 @@ function AdminBlog() {
           {blogs.length === 0 ? <div className="empty-state"><div>+</div><h3>No articles yet</h3><p>Create your first KSL article to get started.</p></div> : <div className="article-table">
             <div className="table-header"><span>ARTICLE</span><span>AUTHOR</span><span>PUBLISHED</span><span>STATUS</span><span>ACTIONS</span></div>
             {blogs.map((blog) => <div className="article-row" key={blog.id}>
-              <div className="article-info"><div className="article-thumbnail">{blog.cover_image ? <img src={getImageUrl(blog.cover_image)} alt={blog.title} /> : <span>KSL</span>}</div><div><h3>{blog.title}</h3><p>Article #{blog.id}</p></div></div>
+              <div className="article-info"><div className="article-thumbnail">{blog.cover_image ? <img src={getImageUrl(blog.cover_image)} alt={blog.title} onError={(event) => { event.currentTarget.src = "/ksl-hero.svg"; }} /> : <span>KSL</span>}</div><div><h3>{blog.title}</h3><p>Article #{blog.id}</p></div></div>
               <div className="author-column">{blog.author}</div>
               <div className="date-column"><strong>{formatDate(blog.published_at)}</strong><span>{formatTime(blog.published_at)}</span></div>
               <div><span className="status-badge">● Published</span></div>
