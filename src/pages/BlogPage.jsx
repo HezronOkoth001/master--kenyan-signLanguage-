@@ -256,7 +256,7 @@ function BlogPage() {
                       featuredArticle.cover_image
                     )}
                     alt={featuredArticle.title}
-                  />
+                  onError={(event) => { event.currentTarget.src = "/ksl-hero.svg"; }} />
                 ) : (
                   <div className="image-placeholder">
                     KSL
@@ -392,7 +392,7 @@ function BlogPage() {
                           blog.cover_image
                         )}
                         alt={blog.title}
-                      />
+                      onError={(event) => { event.currentTarget.src = "/ksl-hero.svg"; }} />
                     ) : (
                       <div className="image-placeholder">
                         KSL
