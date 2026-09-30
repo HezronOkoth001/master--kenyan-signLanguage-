@@ -41,6 +41,16 @@ const Footer = () => {
           <a href="/#contact">Contact</a>
         </div>
 
+        {/* Learn KSL */}
+        <div className="footer-column">
+          <h3>Learn KSL</h3>
+
+          <a href="/how-to-learn-kenyan-sign-language">How to Learn KSL</a>
+          <a href="/ksl-classes-kenya">KSL Classes in Kenya</a>
+          <a href="/kenyan-sign-language-basics">KSL Basics</a>
+          <a href="/blog">KSL Learning Blog</a>
+        </div>
+
         {/* Services */}
         <div className="footer-column">
           <h3>Services</h3>
