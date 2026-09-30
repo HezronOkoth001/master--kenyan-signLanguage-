@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
->
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://YOUR-DOMAIN.com/</loc>
+    <loc>https://master-kenyan-sign-language-x4v8.vercel.app/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>
-
   <url>
-    <loc>https://YOUR-DOMAIN.com/blog</loc>
+    <loc>https://master-kenyan-sign-language-x4v8.vercel.app/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
-
+  <url>
+    <loc>https://master-kenyan-sign-language-x4v8.vercel.app/#classes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://master-kenyan-sign-language-x4v8.vercel.app/#services</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://master-kenyan-sign-language-x4v8.vercel.app/#contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
