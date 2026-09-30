@@ -4,10 +4,7 @@ function Hero() {
   return (
     <section className="hero-section" id="home">
       <div className="hero-container">
-
-        {/* LEFT SIDE */}
         <div className="hero-content">
-
           <div className="hero-label">
             <span></span>
             Learn • Connect • Communicate
@@ -28,39 +25,34 @@ function Hero() {
           </p>
 
           <div className="hero-buttons">
-
-            <Link
-              to="/#classes"
-              className="hero-btn hero-btn-primary"
-            >
+            <Link to="/#classes" className="hero-btn hero-btn-primary">
               Start Learning
             </Link>
-
-            <Link
-              to="/#services"
-              className="hero-btn hero-btn-secondary"
-            >
+            <Link to="/#services" className="hero-btn hero-btn-secondary">
               Explore Classes
             </Link>
-
           </div>
 
+          <div className="hero-trust-row">
+            <span>🤟 Practical lessons</span>
+            <span>•</span>
+            <span>🇰🇪 Made for Kenya</span>
+          </div>
         </div>
 
-        {/* RIGHT SIDE */}
         <div className="hero-visual">
-
           <div className="hero-main-card">
-
             <img
-              src="/ksl-hero.svg"
-              alt="Kenyan Sign Language"
-              className="hero-image"
+              src="https://assets.globalpartnership.org/s3fs-public/styles/standard_blog_banner/public/ndcs_36283697306_0.jpg?VersionId=8vuW_ftrRkCWf.jvSCxJbAPu_C6KQTXt&itok=aNpkTH8w"
+              alt="Students learning sign language in a Kenyan classroom"
+              className="hero-photo"
+              loading="eager"
             />
+
+            <div className="hero-photo-overlay"></div>
 
             <div className="hero-image-overlay">
               <span>KSL</span>
-
               <h2>
                 Kenyan
                 <br />
@@ -68,20 +60,29 @@ function Hero() {
               </h2>
             </div>
 
+            <div className="hero-floating-badge hero-floating-badge-one">
+              <span>🤟</span>
+              <div>
+                <strong>Keep learning</strong>
+                <small>One sign at a time</small>
+              </div>
+            </div>
+
+            <div className="hero-floating-badge hero-floating-badge-two">
+              <span>✓</span>
+              <div>
+                <strong>Learn together</strong>
+                <small>Connect with confidence</small>
+              </div>
+            </div>
           </div>
 
-          {/* SERVICES BUTTON */}
-          <Link
-            to="/#services"
-            className="hero-service-button"
-          >
+          <Link to="/#services" className="hero-service-button">
             <span>Learn with confidence</span>
             <small>Step-by-step KSL lessons</small>
             <strong>→</strong>
           </Link>
-
         </div>
-
       </div>
     </section>
   );
