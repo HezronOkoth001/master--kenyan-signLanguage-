@@ -18,6 +18,7 @@ import BlogPage from "./pages/BlogPage";
 import BlogArticle from "./pages/BlogArticle";
 import AdminLogin from "./pages/AdminLogin";
 import AdminBlog from "./pages/AdminBlog";
+import KSLGuide from "./pages/KSLGuide";
 
 
 /* =====================================================
